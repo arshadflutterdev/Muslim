@@ -1,19 +1,14 @@
 import 'package:Muslim/Core/Const/app_audio.dart';
 import 'package:Muslim/Core/Const/app_images.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/firebase_options.dart';
 import 'package:Muslim/splashscreen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   await MobileAds.instance.initialize();
 
   AdController().initialize();
