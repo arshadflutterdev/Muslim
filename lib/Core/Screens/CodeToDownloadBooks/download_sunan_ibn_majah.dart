@@ -1,35 +1,44 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class DownloadSunanIbnMajah {
   final String apiKey =
       "%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
 
   Future<void> getdownloadbook() async {
-    final getresponse = await http.get(
-      Uri.parse(
-        "https://hadithapi.com/api/ibn-e-majah/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
-      ),
-    );
-    if (getresponse.statusCode == 200) {
+    try {
+      final getresponse = await http.get(
+        Uri.parse(
+          "https://hadithapi.com/api/ibn-e-majah/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
+        ),
+      );
+      if (getresponse.statusCode != 200) {
+        throw Exception("Apis failed to fetch data");
+      }
       final responsedecode = jsonDecode(getresponse.body);
       final chapterlist = responsedecode["chapters"] ?? [];
-      for (var hadiths in chapterlist) {
-        final chapterno = hadiths["chapterNumber"];
-        final hadithresponse = await http.get(
+      for (var chapter in chapterlist) {
+        final chapterNo = chapter["chapterNumber"];
+        final hadithResponse = await http.get(
           Uri.parse(
-            "https://hadithapi.com/api/hadiths/?book=ibn-e-majah&chapter=$chapterno&apiKey=$apiKey",
+            "https://hadithapi.com/api/hadiths/?book=ibn-e-majah&chapter=$chapterNo&apiKey=$apiKey",
           ),
         );
-        if (hadithresponse.statusCode == 200) {
-          final haditdecode = jsonDecode(hadithresponse.body);
-
-          hadiths["hadiths"] = haditdecode["hadiths"]["data"];
-        } else {
-          throw Exception("Failed to fetch all details");
+        if (hadithResponse.statusCode == 200) {
+          final hadithDecode = jsonDecode(hadithResponse.body);
+          chapter["hadiths"] = hadithDecode["hadiths"]["data"];
         }
       }
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/ibn-e-majah.json");
+      await file.writeAsString(
+        jsonEncode({"book": "ibn-e-majah", "chapters": chapterlist}),
+      );
+    } catch (e) {
+      throw Exception("Exception ${e.toString()}");
     }
   }
 }
