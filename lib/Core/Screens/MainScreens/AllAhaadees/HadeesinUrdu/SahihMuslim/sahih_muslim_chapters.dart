@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahimuslimdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahmuslim_chapters_model.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SahihMuslimChaptersssUrdu extends StatefulWidget {
@@ -23,6 +25,36 @@ class _SahihMuslimChaptersssUrduState extends State<SahihMuslimChaptersssUrdu> {
   List<Chapters> filteredlist = [];
   bool isLoading = true;
   bool hasError = false;
+  Future<void> loadofflinechapters() async {
+    setState(() {
+      isLoading = true;
+      hasError = false;
+    });
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/sahih-muslim.json");
+      if (file.existsSync()) {
+        final fileContent = await file.readAsString();
+        final jsonData = jsonDecode(fileContent);
+        final chapterData = Sahimuslimchapterlist.fromJson(jsonData);
+        setState(() {
+          chaptersList = chapterData.chapters ?? [];
+
+          print(chaptersList);
+          filteredlist = chaptersList;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          hasError = true;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      hasError = true;
+      isLoading = false;
+    }
+  }
 
   final TextEditingController _searchcontroller = TextEditingController();
   Future chaptersearching(String query) async {
@@ -39,58 +71,58 @@ class _SahihMuslimChaptersssUrduState extends State<SahihMuslimChaptersssUrdu> {
   @override
   void initState() {
     super.initState();
-    loadChapters();
+    loadofflinechapters();
   }
 
-  Future<void> loadChapters() async {
-    final prefs = await SharedPreferences.getInstance();
-    const key = 'sahih_muslim_chapters';
+  // Future<void> loadChapters() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   const key = 'sahih_muslim_chapters';
 
-    try {
-      // 🔹 Step 1: Check if cached data exists
-      final cachedData = prefs.getString(key);
-      if (cachedData != null) {
-        final decoded = jsonDecode(cachedData);
-        final localChapters = Sahimuslimchapterlist.fromJson(decoded);
-        setState(() {
-          chaptersList = localChapters.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-        });
-      }
+  //   try {
+  //     // 🔹 Step 1: Check if cached data exists
+  //     final cachedData = prefs.getString(key);
+  //     if (cachedData != null) {
+  //       final decoded = jsonDecode(cachedData);
+  //       final localChapters = Sahimuslimchapterlist.fromJson(decoded);
+  //       setState(() {
+  //         chaptersList = localChapters.chapters ?? [];
+  //         filteredlist = chaptersList;
+  //         isLoading = false;
+  //       });
+  //     }
 
-      // 🔹 Step 2: Always try to fetch fresh data from API
-      final response = await http.get(
-        Uri.parse(
-          "https://hadithapi.com/api/sahih-muslim/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
-        ),
-      );
+  //     // 🔹 Step 2: Always try to fetch fresh data from API
+  //     final response = await http.get(
+  //       Uri.parse(
+  //         "https://hadithapi.com/api/sahih-muslim/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
+  //       ),
+  //     );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        // 🔹 Step 3: Save data locally for next time
-        await prefs.setString(key, jsonEncode(data));
-        final chapterData = Sahimuslimchapterlist.fromJson(data);
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       // 🔹 Step 3: Save data locally for next time
+  //       await prefs.setString(key, jsonEncode(data));
+  //       final chapterData = Sahimuslimchapterlist.fromJson(data);
 
-        setState(() {
-          chaptersList = chapterData.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-        });
-      } else {
-        throw Exception("Failed to load chapters");
-      }
-    } catch (e) {
-      debugPrint("Error loading chapters: $e");
-      // 🔹 Step 4: Show error only if there is no local data
-      if (chaptersList.isEmpty) {
-        setState(() {
-          hasError = true;
-          isLoading = false;
-        });
-      }
-    }
-  }
+  //       setState(() {
+  //         chaptersList = chapterData.chapters ?? [];
+  //         filteredlist = chaptersList;
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       throw Exception("Failed to load chapters");
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error loading chapters: $e");
+  //     // 🔹 Step 4: Show error only if there is no local data
+  //     if (chaptersList.isEmpty) {
+  //       setState(() {
+  //         hasError = true;
+  //         isLoading = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
