@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadith_details_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,61 +23,39 @@ class Hadithdetails extends StatefulWidget {
 
 class _HadithdetailsState extends State<Hadithdetails> {
   List<Data> hadithList = [];
-  bool isLoading = true;
+  bool isLoading = false;
   int selected = 1;
+  Future<void> getdownloadhadith() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final chapterQuery = widget.ChapterId != null
+          ? "&chapter=${widget.ChapterId}"
+          : "";
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/sahih-bukhari.json");
+      print("file path printed ${file.path}");
+      print('File exists: ${file.existsSync()}');
+      if (file.existsSync()) {
+        final fileContant = await file.readAsString();
+        final hadithContant = jsonDecode(fileContant);
+        final hadithData = HadithDetails.fromJson(hadithContant);
+        setState(() {
+          hadithList = hadithData.hadiths?.data ?? [];
+          print("here is hadith dataaa  $hadithList");
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      throw Exception("here is exception ${e.toString()}");
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    loadHadithData();
-  }
-
-  Future<void> loadHadithData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'hadith_${widget.ChapterId ?? "all"}';
-
-    final cachedData = prefs.getString(key);
-    if (cachedData != null) {
-      // Load from local storage first
-      final decoded = jsonDecode(cachedData);
-      final cachedHadith = HadithDetails.fromJson(decoded);
-      setState(() {
-        hadithList = cachedHadith.hadiths?.data ?? [];
-        isLoading = false;
-      });
-    }
-
-    try {
-      // Then fetch latest data from API
-      final chapterQuery = widget.ChapterId != null
-          ? "&chapter=${widget.ChapterId}"
-          : "";
-      final response = await http.get(
-        Uri.parse(
-          "https://hadithapi.com/api/hadiths/?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery",
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        final dataa = jsonDecode(response.body);
-        await prefs.setString(key, jsonEncode(dataa)); // Save for next time
-        final hadithdata = HadithDetails.fromJson(dataa);
-
-        setState(() {
-          hadithList = hadithdata.hadiths?.data ?? [];
-          isLoading = false;
-        });
-      } else {
-        throw Exception("Failed to load data");
-      }
-    } catch (e) {
-      if (cachedData == null) {
-        if (!mounted) return;
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
+    getdownloadhadith();
   }
 
   void showbottom(Data item) {
@@ -221,7 +202,7 @@ class _HadithdetailsState extends State<Hadithdetails> {
                 child: CircularProgressIndicator(color: Colors.green),
               )
             : hadithList.isEmpty
-            ? const Center(child: Text("No Internet Connection"))
+            ? const Center(child: Text("No data found"))
             : ListView.builder(
                 itemCount: hadithList.length,
                 itemBuilder: (context, index) {
@@ -341,63 +322,6 @@ ${item.headingEnglish}
                                 ),
                               ],
                             ),
-
-                            //                           Row(
-                            //                             mainAxisAlignment: MainAxisAlignment.end,
-                            //                             children: [
-                            //                               IconButton(
-                            //                                 onPressed: () async {
-                            //                                   final hadeesText =
-                            //                                       """
-
-                            // Hadith No: ${item.hadithNumber}
-                            // Status: ${item.status}
-
-                            // Arabic:
-                            // ${item.hadithArabic}
-
-                            // English Translation:
-                            // ${item.headingEnglish}
-
-                            // 🌙 Shared via Muslim App – Be Connected with Allah
-                            // """;
-                            //                                   await Clipboard.setData(
-                            //                                     ClipboardData(text: hadeesText),
-                            //                                   );
-                            //                                   ScaffoldMessenger.of(context).showSnackBar(
-                            //                                     const SnackBar(
-                            //                                       content: Text(
-                            //                                         "Hadith copied to clipboard ✅",
-                            //                                       ),
-                            //                                       duration: Duration(seconds: 2),
-                            //                                     ),
-                            //                                   );
-                            //                                 },
-                            //                                 icon: const Icon(Icons.copy),
-                            //                               ),
-                            //                               const Spacer(),
-                            //                               IconButton(
-                            //                                 onPressed: () async {
-                            //                                   final hadeesText =
-                            //                                       """
-
-                            // Hadith No: ${item.hadithNumber}
-                            // Status: ${item.status}
-
-                            // Arabic:
-                            // ${item.hadithArabic}
-
-                            // English Translation:
-                            // ${item.headingEnglish}
-
-                            // 🌙 Shared via Muslim App – Be Connected with Allah
-                            // """;
-                            //                                   await Share.share(hadeesText);
-                            //                                 },
-                            //                                 icon: const Icon(Icons.share),
-                            //                               ),
-                            //                             ],
-                            //                           ),
                           ],
                         ),
                       ),
