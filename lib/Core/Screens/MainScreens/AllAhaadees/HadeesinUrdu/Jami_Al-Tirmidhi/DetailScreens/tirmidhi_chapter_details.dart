@@ -2,16 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_details.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_details.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/Models/chapter_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TirmidhiChapterDetailsUrdu extends StatefulWidget {
   const TirmidhiChapterDetailsUrdu({super.key});
@@ -24,7 +18,7 @@ class TirmidhiChapterDetailsUrdu extends StatefulWidget {
 class _TirmidhiChapterDetailsUrduState
     extends State<TirmidhiChapterDetailsUrdu> {
   List<Chapters> chaptersList = [];
-  List<Chapters> filteredlist = [];
+
   bool isLoading = true;
   bool hasError = false;
   Future<void> getdownloadedchapters() async {
@@ -44,7 +38,6 @@ class _TirmidhiChapterDetailsUrduState
           chaptersList = chapterrrr.chapters ?? [];
           print("here is all chapters=$chaptersList");
 
-          filteredlist = chaptersList;
           isLoading = false;
         });
       } else {
@@ -61,74 +54,11 @@ class _TirmidhiChapterDetailsUrduState
     }
   }
 
-  final TextEditingController _searchcontroller = TextEditingController();
-  Future chaptersearching(String query) async {
-    setState(() {
-      filteredlist = chaptersList.where((Chapters) {
-        final name = Chapters.chapterUrdu?.toString().toLowerCase() ?? '';
-        final number = Chapters.chapterNumber?.toString().toLowerCase() ?? "";
-        final input = query.toLowerCase();
-        return name.contains(input) || number.contains(input);
-      }).toList();
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     getdownloadedchapters();
   }
-
-  // Future<void> loadChapters() async {
-  //   try {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     const key = 'tirmidhi_chapters';
-
-  //     // 🔹 Step 1: Load Cached Data if available
-  //     final cachedData = prefs.getString(key);
-  //     if (cachedData != null) {
-  //       final decoded = jsonDecode(cachedData);
-  //       final localModel = TirmidhiModel.fromJson(decoded);
-  //       setState(() {
-  //         chaptersList = localModel.chapters ?? [];
-  //         filteredlist = chaptersList;
-  //         isLoading = false;
-  //       });
-  //     }
-
-  //     // 🔹 Step 2: Fetch Fresh Data from API
-  //     final response = await http.get(
-  //       Uri.parse(
-  //         "https://hadithapi.com/api/al-tirmidhi/chapters?apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte",
-  //       ),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final data = jsonDecode(response.body);
-  //       await prefs.setString(
-  //         key,
-  //         jsonEncode(data),
-  //       ); // ✅ Cache it for next time
-  //       final model = TirmidhiModel.fromJson(data);
-  //       setState(() {
-  //         chaptersList = model.chapters ?? [];
-  //         filteredlist = chaptersList;
-  //         isLoading = false;
-  //         hasError = false;
-  //       });
-  //     } else {
-  //       throw Exception("Failed to fetch data from API");
-  //     }
-  //   } catch (e) {
-  //     debugPrint("⚠️ Error loading chapters: $e");
-  //     if (chaptersList.isEmpty) {
-  //       setState(() {
-  //         hasError = true;
-  //         isLoading = false;
-  //       });
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,54 +66,7 @@ class _TirmidhiChapterDetailsUrduState
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: ContinuousRectangleBorder(
-                          side: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor: Colors.white,
 
-                        title: Column(
-                          children: [
-                            Text(
-                              "Search Chapter",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Gap(15),
-
-                            CustomTextField(
-                              onChanged: (value) {
-                                chaptersearching(value.trim());
-                              },
-                              hinttext: "Search",
-                              fieldheight: 50,
-                              controller: _searchcontroller,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                _searchcontroller.clear();
-                              },
-                              child: Text("Search"),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                icon: Icon(CupertinoIcons.search),
-              ),
-            ),
-          ],
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
@@ -202,9 +85,9 @@ class _TirmidhiChapterDetailsUrduState
             : chaptersList.isEmpty
             ? const Center(child: Text("No chapters found"))
             : ListView.builder(
-                itemCount: filteredlist.length,
+                itemCount: chaptersList.length,
                 itemBuilder: (context, index) {
-                  final chapter = filteredlist[index];
+                  final chapter = chaptersList[index];
                   return Card(
                     elevation: 3,
                     color: Colors.white,
@@ -241,15 +124,8 @@ class _TirmidhiChapterDetailsUrduState
               ),
       ),
       onWillPop: () async {
-        if (filteredlist != chaptersList) {
-          setState(() {
-            filteredlist = chaptersList;
-          });
-          return false;
-        } else {
-          AdController().tryShowAd();
-          return true;
-        }
+        AdController().tryShowAd();
+        return true;
       },
     );
   }

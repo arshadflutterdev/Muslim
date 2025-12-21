@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/Models/sunan_ibn_e_majah_chapter_model.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
@@ -20,79 +22,40 @@ class IbneMajahUrdu extends StatefulWidget {
 
 class _IbneMajahUrduState extends State<IbneMajahUrdu> {
   List<Chapters> chaptersList = [];
-  List<Chapters> filteredlist = [];
   bool isLoading = true;
   bool hasError = false;
-
-  final TextEditingController _searchcontroller = TextEditingController();
-  Future chaptersearching(String query) async {
+  Future<void> getDownloadChapters() async {
     setState(() {
-      filteredlist = chaptersList.where((Chapters) {
-        final name = Chapters.chapterUrdu?.toString().toLowerCase() ?? '';
-        final number = Chapters.chapterNumber?.toString().toLowerCase() ?? "";
-        final input = query.toLowerCase();
-        return name.contains(input) || number.contains(input);
-      }).toList();
+      isLoading = true;
+      hasError = false;
     });
-  }
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/ibn-e-majah.json");
+      print("here is file path ${file.path}");
 
-  final String apiUrl =
-      "https://hadithapi.com/api/ibn-e-majah/chapters?apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+      final fileContant = await file.readAsString();
+
+      final filedecode = jsonDecode(fileContant);
+      final chaptersss = MajahChapterModel.fromJson(filedecode);
+      setState(() {
+        chaptersList = chaptersss.chapters ?? [];
+        print("all chapters instance $chaptersList");
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        hasError = true;
+      });
+      print("error regarding chapters ${e.toString()}");
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    loadChapters();
-  }
-
-  Future<void> loadChapters() async {
-    final prefs = await SharedPreferences.getInstance();
-    const cacheKey = 'ibne_majah_chapters';
-
-    // Load cached data
-    final cachedData = prefs.getString(cacheKey);
-    if (cachedData != null) {
-      try {
-        final decoded = jsonDecode(cachedData);
-        final cachedModel = MajahChapterModel.fromJson(decoded);
-        if (!mounted) return;
-        setState(() {
-          chaptersList = cachedModel.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-        });
-      } catch (e) {
-        debugPrint("Cache parse error: $e");
-      }
-    }
-
-    // Fetch fresh data
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        await prefs.setString(cacheKey, jsonEncode(data));
-
-        final model = MajahChapterModel.fromJson(data);
-        if (!mounted) return;
-        setState(() {
-          chaptersList = model.chapters ?? [];
-          filteredlist = chaptersList;
-          isLoading = false;
-          hasError = false;
-        });
-      } else {
-        throw Exception("API Error: ${response.statusCode}");
-      }
-    } catch (e) {
-      debugPrint("Network error: $e");
-      if (!mounted) return;
-      setState(() {
-        if (chaptersList.isEmpty) hasError = true;
-        isLoading = false;
-      });
-    }
+    getDownloadChapters();
   }
 
   @override
@@ -101,54 +64,7 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: ContinuousRectangleBorder(
-                          side: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor: Colors.white,
 
-                        title: Column(
-                          children: [
-                            Text(
-                              "Search Chapter",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Gap(15),
-
-                            CustomTextField(
-                              onChanged: (value) {
-                                chaptersearching(value.trim());
-                              },
-                              hinttext: "Search",
-                              fieldheight: 50,
-                              controller: _searchcontroller,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                _searchcontroller.clear();
-                              },
-                              child: Text("Search"),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                icon: Icon(CupertinoIcons.search),
-              ),
-            ),
-          ],
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
@@ -171,9 +87,9 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
             }
 
             return ListView.builder(
-              itemCount: filteredlist.length,
+              itemCount: chaptersList.length,
               itemBuilder: (context, index) {
-                final chapter = filteredlist[index];
+                final chapter = chaptersList[index];
                 return Card(
                   elevation: 3,
                   color: Colors.white,
@@ -212,15 +128,8 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
         ),
       ),
       onWillPop: () async {
-        if (filteredlist != chaptersList) {
-          setState(() {
-            filteredlist = chaptersList;
-          });
-          return false;
-        } else {
-          AdController().tryShowAd();
-          return true;
-        }
+        AdController().tryShowAd();
+        return true;
       },
     );
   }

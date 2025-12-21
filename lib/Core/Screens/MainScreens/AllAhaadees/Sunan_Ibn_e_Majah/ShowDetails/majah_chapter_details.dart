@@ -33,7 +33,7 @@ class _IbneMajahState extends State<IbneMajah> {
     });
     try {
       final dir = await getApplicationDocumentsDirectory();
-      final file = File("${dir.path}/ibn-e-majah");
+      final file = File("${dir.path}/ibn-e-majah.json");
       print("here is file path ${file.path}");
 
       final fileContant = await file.readAsString();

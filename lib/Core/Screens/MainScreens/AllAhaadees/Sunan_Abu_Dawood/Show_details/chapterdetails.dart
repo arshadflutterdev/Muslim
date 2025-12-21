@@ -4,13 +4,8 @@ import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/chapters_model.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Show_details/sunan_hadith_details.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SunanChapterDetails extends StatefulWidget {
   const SunanChapterDetails({super.key});
