@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
 import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
 import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
@@ -17,7 +16,6 @@ import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahiBukhari/sahibukhari.dart';

@@ -3,14 +3,8 @@ import 'dart:io';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahimuslimdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahmuslim_chapters_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SahihMuslimChaptersss extends StatefulWidget {
   const SahihMuslimChaptersss({super.key});
@@ -65,7 +59,7 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
     return WillPopScope(
       onWillPop: () async {
         AdController().tryShowAd();
-        return false;
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(
