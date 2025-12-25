@@ -1,13 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/hadithdetailsmodel.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SunanHadithDetailsUrdu extends StatefulWidget {
   final String? chapterno;
@@ -18,68 +18,127 @@ class SunanHadithDetailsUrdu extends StatefulWidget {
 }
 
 class _SunanHadithDetailsUrduState extends State<SunanHadithDetailsUrdu> {
-  List<Data> hadithList = [];
+  List<Data> haditsss = [];
   bool isLoading = true;
   bool hasError = false;
+  Future<void> getdownloadhadith() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/ibn-e-majah.json");
+
+      if (!file.existsSync()) {
+        print("Offline data file not found!");
+        setState(() {
+          haditsss = [];
+          isLoading = false;
+        });
+        return;
+      }
+
+      final fileContent = await file.readAsString();
+      final filedecode = jsonDecode(fileContent);
+
+      // filedecode["chapters"] should be a List
+      final chapters = filedecode["chapters"];
+      List<Data> allHadiths = [];
+
+      if (chapters != null && chapters is List) {
+        for (var chapter in chapters) {
+          final hadithMap = chapter["hadiths"];
+          if (hadithMap != null && hadithMap is Map<String, dynamic>) {
+            final hadithList = hadithMap["data"];
+            if (hadithList != null && hadithList is List) {
+              for (var h in hadithList) {
+                allHadiths.add(Data.fromJson(h));
+              }
+            }
+          }
+        }
+      }
+
+      // Filter by ChapterId if provided
+      final filteredHadiths = widget.chapterno == null
+          ? allHadiths
+          : allHadiths.where((h) => h.chapterId == widget.chapterno).toList();
+
+      setState(() {
+        haditsss = filteredHadiths;
+        isLoading = false;
+      });
+
+      print("Total hadiths loaded: ${haditsss.length}");
+    } catch (e) {
+      print("Error loading hadiths offline: ${e.toString()}");
+      setState(() {
+        haditsss = [];
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    loadHadithData();
+    // loadHadithData();
+    getdownloadhadith();
   }
 
-  Future<void> loadHadithData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'sunan_hadith_${widget.chapterno ?? "all"}';
+  // Future<void> loadHadithData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final key = 'sunan_hadith_${widget.chapterno ?? "all"}';
 
-    // Load cached data first
-    final cachedData = prefs.getString(key);
-    if (cachedData != null) {
-      try {
-        final decoded = jsonDecode(cachedData);
-        final cachedHadith = SunanHadithsDetails.fromJson(decoded);
-        setState(() {
-          hadithList = cachedHadith.hadiths?.data ?? [];
-          isLoading = false;
-        });
-      } catch (e) {
-        debugPrint("Error decoding cached data: $e");
-      }
-    }
+  //   // Load cached data first
+  //   final cachedData = prefs.getString(key);
+  //   if (cachedData != null) {
+  //     try {
+  //       final decoded = jsonDecode(cachedData);
+  //       final cachedHadith = SunanHadithsDetails.fromJson(decoded);
+  //       setState(() {
+  //         hadithList = cachedHadith.hadiths?.data ?? [];
+  //         isLoading = false;
+  //       });
+  //     } catch (e) {
+  //       debugPrint("Error decoding cached data: $e");
+  //     }
+  //   }
 
-    // Fetch latest data from API
-    try {
-      final chapternum = widget.chapterno != null
-          ? "&chapter=${widget.chapterno}"
-          : "";
-      final response = await http.get(
-        Uri.parse(
-          "https://hadithapi.com/api/hadiths/?book=abu-dawood&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapternum",
-        ),
-      );
+  //   // Fetch latest data from API
+  //   try {
+  //     final chapternum = widget.chapterno != null
+  //         ? "&chapter=${widget.chapterno}"
+  //         : "";
+  //     final response = await http.get(
+  //       Uri.parse(
+  //         "https://hadithapi.com/api/hadiths/?book=abu-dawood&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapternum",
+  //       ),
+  //     );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        await prefs.setString(key, jsonEncode(data)); // save latest data
-        final hadithData = SunanHadithsDetails.fromJson(data);
-        setState(() {
-          hadithList = hadithData.hadiths?.data ?? [];
-          isLoading = false;
-        });
-      } else {
-        throw Exception("No data found from API");
-      }
-    } catch (e) {
-      debugPrint("Error fetching data: $e");
-      if (hadithList.isEmpty) {
-        if (!mounted) return;
-        setState(() {
-          hasError = true;
-          isLoading = false;
-        });
-      }
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       await prefs.setString(key, jsonEncode(data)); // save latest data
+  //       final hadithData = SunanHadithsDetails.fromJson(data);
+  //       setState(() {
+  //         hadithList = hadithData.hadiths?.data ?? [];
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       throw Exception("No data found from API");
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error fetching data: $e");
+  //     if (hadithList.isEmpty) {
+  //       if (!mounted) return;
+  //       setState(() {
+  //         hasError = true;
+  //         isLoading = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   int selected = 1;
   void showbottom(Data item) {
@@ -227,12 +286,12 @@ class _SunanHadithDetailsUrduState extends State<SunanHadithDetailsUrdu> {
               )
             : hasError
             ? const Center(child: Text("No Internet Connection"))
-            : hadithList.isEmpty
+            : haditsss.isEmpty
             ? const Center(child: Text("No data available"))
             : ListView.builder(
-                itemCount: hadithList.length,
+                itemCount: haditsss.length,
                 itemBuilder: (context, index) {
-                  final item = hadithList[index];
+                  final item = haditsss[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(

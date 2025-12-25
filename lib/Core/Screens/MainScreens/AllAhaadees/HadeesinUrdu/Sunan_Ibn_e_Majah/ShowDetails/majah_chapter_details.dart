@@ -58,6 +58,58 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
     getDownloadChapters();
   }
 
+  List<String> ibnMajahHadithRanges = [
+    "1-55",
+    "56-110",
+    "111-165",
+    "166-220",
+    "221-275",
+    "276-330",
+    "331-385",
+    "386-440",
+    "441-495",
+    "496-550",
+    "551-605",
+    "606-660",
+    "661-715",
+    "716-770",
+    "771-825",
+    "826-880",
+    "881-935",
+    "936-990",
+    "991-1045",
+    "1046-1100",
+    "1101-1155",
+    "1156-1210",
+    "1211-1265",
+    "1266-1320",
+    "1321-1375",
+    "1376-1430",
+    "1431-1485",
+    "1486-1540",
+    "1541-1595",
+    "1596-1650",
+    "1651-1705",
+    "1706-1760",
+    "1761-1815",
+    "1816-1870",
+    "1871-1925",
+    "1926-1980",
+    "1981-2035",
+    "2036-2090",
+    "2091-2145",
+    "2146-2200",
+    "2201-2255",
+    "2256-2310",
+    "2311-2365",
+    "2366-2420",
+    "2421-2475",
+    "2476-2530",
+    "2531-2585",
+    "2586-2640",
+    "2641-2694",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -89,6 +141,7 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
             return ListView.builder(
               itemCount: chaptersList.length,
               itemBuilder: (context, index) {
+                final hadithlength = ibnMajahHadithRanges[index];
                 final chapter = chaptersList[index];
                 return Card(
                   elevation: 3,
@@ -113,11 +166,11 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
                       ),
                     ),
                     trailing: Text(
-                      chapter.chapterNumber ?? '',
+                      hadithlength,
                       style: TextStyle(
                         fontFamily: AppFonts.arabicfont,
-                        fontSize: 18,
-                        color: Colors.black,
+                        fontSize: 16,
+                        color: Colors.black87,
                       ),
                     ),
                   ),

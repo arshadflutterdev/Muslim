@@ -39,22 +39,6 @@ class Checksomething extends StatefulWidget {
 }
 
 class _ChecksomethingState extends State<Checksomething> {
-  // Future<void> openyt() async {
-  //   final Uri uri = Uri.parse("https://www.flaticon.com/");
-  //   try {
-  //     if (!await canLaunchUrl(uri)) {
-  //       ScaffoldMessenger.of(
-  //         context,
-  //       ).showSnackBar(SnackBar(content: Text("Link Connot opened")));
-  //       return;
-  //     }
-  //     await launchUrl(uri, mode: LaunchMode.externalApplication);
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text("error $e")));
-  //   }
-  // }
   bool ispaused = false;
   late AudioPlayer _player = AudioPlayer();
   Duration _duration = Duration.zero;

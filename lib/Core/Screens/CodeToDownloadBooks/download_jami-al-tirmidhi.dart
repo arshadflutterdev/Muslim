@@ -29,7 +29,7 @@ class DownloadJamialtirmidhi {
           if (hadithresponse.statusCode == 200) {
             final hadithdecode = jsonDecode(hadithresponse.body);
             final hadithdetails = HadithDetails.fromJson(hadithdecode);
-            hadiths["hadits"] = hadithdetails.hadiths?.toJson();
+            hadiths["hadiths"] = hadithdetails.hadiths?.toJson();
           } else {
             throw Exception("failed to fetch hadits");
           }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/Models/sunananasai_detailed_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,76 +23,70 @@ class SunananasaiHadithDetails extends StatefulWidget {
 class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
   bool isLoading = true;
   bool hasError = false;
-  List<Data> hadithList = [];
+  List<Data> haditsss = [];
+  Future<void> getdownloadhadith() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/sunan-nasai.json");
+
+      if (!file.existsSync()) {
+        print("Offline data file not found!");
+        setState(() {
+          haditsss = [];
+          isLoading = false;
+        });
+        return;
+      }
+
+      final fileContent = await file.readAsString();
+      final filedecode = jsonDecode(fileContent);
+
+      // filedecode["chapters"] should be a List
+      final chapters = filedecode["chapters"];
+      List<Data> allHadiths = [];
+
+      if (chapters != null && chapters is List) {
+        for (var chapter in chapters) {
+          final hadithMap = chapter["hadiths"];
+          if (hadithMap != null && hadithMap is Map<String, dynamic>) {
+            final hadithList = hadithMap["data"];
+            if (hadithList != null && hadithList is List) {
+              for (var h in hadithList) {
+                allHadiths.add(Data.fromJson(h));
+              }
+            }
+          }
+        }
+      }
+
+      // Filter by ChapterId if provided
+      final filteredHadiths = widget.chapterno == null
+          ? allHadiths
+          : allHadiths.where((h) => h.chapterId == widget.chapterno).toList();
+
+      setState(() {
+        haditsss = filteredHadiths;
+        isLoading = false;
+      });
+
+      print("Total hadiths loaded: ${haditsss.length}");
+    } catch (e) {
+      print("Error loading hadiths offline: ${e.toString()}");
+      setState(() {
+        haditsss = [];
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    loadHadithData();
-  }
-
-  Future<void> loadHadithData() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final cacheKey = "sunan_nasai_chapter_${widget.chapterno}";
-
-    // 🔹 1) Load Cached Data
-    final cachedData = prefs.getString(cacheKey);
-    if (cachedData != null) {
-      try {
-        final decoded = jsonDecode(cachedData);
-        final model = SunanAnNasaiHadithDetails.fromJson(decoded);
-
-        setState(() {
-          hadithList = model.hadiths?.data ?? [];
-          isLoading = false;
-          hasError = false;
-        });
-
-        print("📌 Loaded hadith details from CACHE");
-        return; // 🔥 Skip API request
-      } catch (e) {
-        print("Cache parse error: $e");
-      }
-    }
-
-    // 🔹 2) Fetch From API (only if cache not available)
-    try {
-      final chapterQuery = widget.chapterno != null
-          ? "&chapter=${widget.chapterno}"
-          : "";
-
-      final url =
-          "https://hadithapi.com/api/hadiths/?book=sunan-nasai&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery";
-
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        // Save to cache
-        await prefs.setString(cacheKey, jsonEncode(data));
-
-        final model = SunanAnNasaiHadithDetails.fromJson(data);
-
-        setState(() {
-          hadithList = model.hadiths?.data ?? [];
-          isLoading = false;
-          hasError = false;
-        });
-
-        print("🌍 Loaded hadith details from API + Cached");
-      } else {
-        throw Exception("API Error: ${response.statusCode}");
-      }
-    } catch (e) {
-      print("Network Error: $e");
-      if (mounted)
-        setState(() {
-          isLoading = false;
-          hasError = true;
-        });
-    }
+    getdownloadhadith();
   }
 
   int selected = 1;
@@ -237,12 +233,12 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
             ? const Center(child: CircularProgressIndicator())
             : hasError
             ? const Center(child: Text("No Internet ❌"))
-            : hadithList.isEmpty
+            : haditsss.isEmpty
             ? const Center(child: Text("No data available"))
             : ListView.builder(
-                itemCount: hadithList.length,
+                itemCount: haditsss.length,
                 itemBuilder: (context, index) {
-                  final item = hadithList[index];
+                  final item = haditsss[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(

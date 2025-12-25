@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/Models/tirmidhi_details_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,64 +20,71 @@ class TirmidhiDetailsUrdu extends StatefulWidget {
 }
 
 class _TirmidhiDetailsUrduState extends State<TirmidhiDetailsUrdu> {
-  List<Data> hadithList = [];
+  List<Data> haditsss = [];
   bool isLoading = true;
   bool hasError = false;
+  Future<void> getdownloadhadith() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/al-tirmidhi.json");
+
+      if (!file.existsSync()) {
+        print("Offline data file not found!");
+        setState(() {
+          haditsss = [];
+          isLoading = false;
+        });
+        return;
+      }
+
+      final fileContent = await file.readAsString();
+      final filedecode = jsonDecode(fileContent);
+
+      // filedecode["chapters"] should be a List
+      final chapters = filedecode["chapters"];
+      List<Data> allHadiths = [];
+
+      if (chapters != null && chapters is List) {
+        for (var chapter in chapters) {
+          final hadithMap = chapter["hadiths"];
+          if (hadithMap != null && hadithMap is Map<String, dynamic>) {
+            final hadithList = hadithMap["data"];
+            if (hadithList != null && hadithList is List) {
+              for (var h in hadithList) {
+                allHadiths.add(Data.fromJson(h));
+              }
+            }
+          }
+        }
+      }
+
+      // Filter by ChapterId if provided
+      final filteredHadiths = widget.chapterId == null
+          ? allHadiths
+          : allHadiths.where((h) => h.chapterId == widget.chapterId).toList();
+
+      setState(() {
+        haditsss = filteredHadiths;
+        isLoading = false;
+      });
+
+      print("Total hadiths loaded: ${haditsss.length}");
+    } catch (e) {
+      print("Error loading hadiths offline: ${e.toString()}");
+      setState(() {
+        haditsss = [];
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    loadHadiths();
-  }
-
-  Future<void> loadHadiths() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final chapterKey = 'tirmidhi_hadiths_${widget.chapterId ?? "all"}';
-
-      // 🔹 Step 1: Load Cached Data (if exists)
-      final cachedData = prefs.getString(chapterKey);
-      if (cachedData != null) {
-        final decoded = jsonDecode(cachedData);
-        final cachedModel = TirmidhiModeldetailed.fromJson(decoded);
-        setState(() {
-          hadithList = cachedModel.hadiths?.data ?? [];
-          isLoading = false;
-        });
-      }
-
-      // 🔹 Step 2: Fetch Fresh Data from API
-      final chapterQuery = widget.chapterId != null
-          ? "&chapter=${widget.chapterId}"
-          : "";
-      final response = await http.get(
-        Uri.parse(
-          "https://hadithapi.com/api/hadiths/?book=al-tirmidhi&apiKey=%242y%2410%24pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery",
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        await prefs.setString(chapterKey, jsonEncode(data)); // ✅ Save cache
-        final model = TirmidhiModeldetailed.fromJson(data);
-        setState(() {
-          hadithList = model.hadiths?.data ?? [];
-          isLoading = false;
-          hasError = false;
-        });
-      } else {
-        throw Exception("Failed to fetch from API");
-      }
-    } catch (e) {
-      debugPrint("⚠️ Error loading hadiths: $e");
-      if (hadithList.isEmpty) {
-        if (!mounted) return;
-        setState(() {
-          isLoading = false;
-          hasError = true;
-        });
-      }
-    }
   }
 
   // 🔹 Reusable function for copying or sharing Hadith text
@@ -243,12 +252,12 @@ ${item.hadithEnglish ?? 'N/A'}
               )
             : hasError
             ? const Center(child: Text("No Internet Connection ❌"))
-            : hadithList.isEmpty
+            : haditsss.isEmpty
             ? const Center(child: Text("No hadith found"))
             : ListView.builder(
-                itemCount: hadithList.length,
+                itemCount: haditsss.length,
                 itemBuilder: (context, index) {
-                  final item = hadithList[index];
+                  final item = haditsss[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(

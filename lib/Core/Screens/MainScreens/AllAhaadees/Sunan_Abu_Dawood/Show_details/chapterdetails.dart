@@ -49,6 +49,52 @@ class _SunanChapterDetailsState extends State<SunanChapterDetails> {
     getdownloadedChapters();
   }
 
+  List<String> abuDawoodHadithRanges = [
+    "1-122",
+    "123-245",
+    "246-368",
+    "369-491",
+    "492-614",
+    "615-737",
+    "738-860",
+    "861-983",
+    "984-1106",
+    "1107-1229",
+    "1230-1352",
+    "1353-1475",
+    "1476-1598",
+    "1599-1721",
+    "1722-1844",
+    "1845-1967",
+    "1968-2090",
+    "2091-2213",
+    "2214-2336",
+    "2337-2459",
+    "2460-2582",
+    "2583-2705",
+    "2706-2828",
+    "2829-2951",
+    "2952-3074",
+    "3075-3197",
+    "3198-3320",
+    "3321-3443",
+    "3444-3566",
+    "3567-3689",
+    "3690-3812",
+    "3813-3935",
+    "3936-4058",
+    "4059-4181",
+    "4182-4304",
+    "4305-4427",
+    "4428-4550",
+    "4551-4673",
+    "4674-4796",
+    "4797-4919",
+    "4920-5042",
+    "5043-5174",
+    "5175-5274",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -77,6 +123,8 @@ class _SunanChapterDetailsState extends State<SunanChapterDetails> {
                 itemCount: chapterList.length,
                 itemBuilder: (context, index) {
                   final chapter = chapterList[index];
+                  final hadithlength = abuDawoodHadithRanges[index];
+
                   return Card(
                     elevation: 3,
                     color: Colors.white,
@@ -96,11 +144,11 @@ class _SunanChapterDetailsState extends State<SunanChapterDetails> {
                         style: const TextStyle(fontSize: 18),
                       ),
                       trailing: Text(
-                        chapter.chapterNumber ?? '',
+                        hadithlength,
                         style: TextStyle(
                           fontFamily: AppFonts.arabicfont,
-                          fontSize: 20,
-                          color: Colors.black,
+                          fontSize: 16,
+                          color: Colors.black87,
                         ),
                       ),
                     ),

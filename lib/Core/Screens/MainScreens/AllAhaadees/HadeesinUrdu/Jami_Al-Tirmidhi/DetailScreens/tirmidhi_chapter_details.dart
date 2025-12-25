@@ -54,6 +54,60 @@ class _TirmidhiChapterDetailsUrduState
     }
   }
 
+  //hadiths in chapters
+  List<String> tirmidhiHadithRanges = [
+    "1-79",
+    "80-158",
+    "159-237",
+    "238-316",
+    "317-395",
+    "396-474",
+    "475-553",
+    "554-632",
+    "633-711",
+    "712-790",
+    "791-869",
+    "870-948",
+    "949-1027",
+    "1028-1106",
+    "1107-1185",
+    "1186-1264",
+    "1265-1343",
+    "1344-1422",
+    "1423-1501",
+    "1502-1580",
+    "1581-1659",
+    "1660-1738",
+    "1739-1817",
+    "1818-1896",
+    "1897-1975",
+    "1976-2054",
+    "2055-2133",
+    "2134-2212",
+    "2213-2291",
+    "2292-2370",
+    "2371-2449",
+    "2450-2528",
+    "2529-2607",
+    "2608-2686",
+    "2687-2765",
+    "2766-2844",
+    "2845-2923",
+    "2924-3002",
+    "3003-3081",
+    "3082-3160",
+    "3161-3239",
+    "3240-3318",
+    "3319-3397",
+    "3398-3476",
+    "3477-3555",
+    "3556-3634",
+    "3635-3713",
+    "3714-3792",
+    "3793-3871",
+    "3872-3956",
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +142,8 @@ class _TirmidhiChapterDetailsUrduState
                 itemCount: chaptersList.length,
                 itemBuilder: (context, index) {
                   final chapter = chaptersList[index];
+                  final hadithlength = tirmidhiHadithRanges[index];
+
                   return Card(
                     elevation: 3,
                     color: Colors.white,
@@ -111,11 +167,11 @@ class _TirmidhiChapterDetailsUrduState
                         ),
                       ),
                       trailing: Text(
-                        chapter.chapterNumber ?? '',
+                        hadithlength,
                         style: TextStyle(
                           fontFamily: AppFonts.arabicfont,
-                          fontSize: 25,
-                          color: Colors.black,
+                          fontSize: 16,
+                          color: Colors.black87,
                         ),
                       ),
                     ),

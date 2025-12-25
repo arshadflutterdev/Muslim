@@ -119,6 +119,89 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     }
   }
 
+  //here is function if downloaded then navigate otherwise no
+  void handleBookTap({required String slug, required bool isUrdu}) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File("${dir.path}/$slug.json");
+
+    if (!file.existsSync()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            isUrdu ? "پہلے حدیث ڈاؤن لوڈ کریں" : "Please download hadith first",
+          ),
+        ),
+      );
+      return;
+    }
+
+    // ✅ Navigate if downloaded
+    if (!isUrdu) {
+      // ---------- ENGLISH ----------
+      if (slug == "sahih-bukhari") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Bukhari(title: '')),
+        );
+      } else if (slug == "sahih-muslim") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SahihMuslimChaptersss()),
+        );
+      } else if (slug == "al-tirmidhi") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => TirmidhiChapterDetails()),
+        );
+      } else if (slug == "abu-dawood") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SunanChapterDetails()),
+        );
+      } else if (slug == "ibn-e-majah") {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => IbneMajah()));
+      } else if (slug == "sunan-nasai") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SunanChaptersss()),
+        );
+      }
+    } else {
+      // ---------- URDU ----------
+      if (slug == "sahih-bukhari") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => BukhariUrdu(title: '')),
+        );
+      } else if (slug == "sahih-muslim") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SahihMuslimChaptersssUrdu()),
+        );
+      } else if (slug == "al-tirmidhi") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => TirmidhiChapterDetailsUrdu()),
+        );
+      } else if (slug == "abu-dawood") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SunanChapterDetailsUrdu()),
+        );
+      } else if (slug == "ibn-e-majah") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => IbneMajahUrdu()),
+        );
+      } else if (slug == "sunan-nasai") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SunanChaptersssUrdu()),
+        );
+      }
+    }
+  }
+
   List<Color> namecolors = [
     Color(0xFF0046FF),
     Color(0xFF59AC77),
@@ -259,56 +342,63 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                   ),
                                   child: ListTile(
                                     onTap: () {
-                                      // Navigate chapters (keep original logic)
-                                      if (slug == "sahih-bukhari") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                Bukhari(title: ''),
-                                          ),
-                                        );
-                                      } else if (slug == "sahih-muslim") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SahihMuslimChaptersss(),
-                                          ),
-                                        );
-                                      } else if (slug == "al-tirmidhi") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TirmidhiChapterDetails(),
-                                          ),
-                                        );
-                                      } else if (slug == "abu-dawood") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SunanChapterDetails(),
-                                          ),
-                                        );
-                                      } else if (slug == "ibn-e-majah") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => IbneMajah(),
-                                          ),
-                                        );
-                                      } else if (slug == "sunan-nasai") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SunanChaptersss(),
-                                          ),
-                                        );
-                                      }
+                                      handleBookTap(slug: slug, isUrdu: false);
+
+                                      //  onTap: () {
+                                      //                                       // Navigate chapters (keep original logic)
+                                      //                                         handleBookTap(slug: slug, isUrdu: false);
+
+                                      //                                       if (slug == "sahih-bukhari") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) =>
+                                      //                                                 Bukhari(title: ''),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       } else if (slug == "sahih-muslim") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) =>
+                                      //                                                 SahihMuslimChaptersss(),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       } else if (slug == "al-tirmidhi") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) =>
+                                      //                                                 TirmidhiChapterDetails(),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       } else if (slug == "abu-dawood") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) =>
+                                      //                                                 SunanChapterDetails(),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       } else if (slug == "ibn-e-majah") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) => IbneMajah(),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       } else if (slug == "sunan-nasai") {
+                                      //                                         Navigator.push(
+                                      //                                           context,
+                                      //                                           MaterialPageRoute(
+                                      //                                             builder: (context) =>
+                                      //                                                 SunanChaptersss(),
+                                      //                                           ),
+                                      //                                         );
+                                      //                                       }
+                                      //                                     },
                                     },
+
                                     trailing: SizedBox(
                                       width: width * 0.20,
                                       child: Row(
@@ -396,56 +486,60 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                   ),
                                   child: ListTile(
                                     onTap: () {
-                                      if (slug == "sahih-bukhari") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BukhariUrdu(title: ''),
-                                          ),
-                                        );
-                                      } else if (slug == "sahih-muslim") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SahihMuslimChaptersssUrdu(),
-                                          ),
-                                        );
-                                      } else if (slug == "al-tirmidhi") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TirmidhiChapterDetailsUrdu(),
-                                          ),
-                                        );
-                                      } else if (slug == "abu-dawood") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SunanChapterDetailsUrdu(),
-                                          ),
-                                        );
-                                      } else if (slug == "ibn-e-majah") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                IbneMajahUrdu(),
-                                          ),
-                                        );
-                                      } else if (slug == "sunan-nasai") {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SunanChaptersssUrdu(),
-                                          ),
-                                        );
-                                      }
+                                      handleBookTap(slug: slug, isUrdu: true);
                                     },
+
+                                    // onTap: () {
+                                    //   if (slug == "sahih-bukhari") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             BukhariUrdu(title: ''),
+                                    //       ),
+                                    //     );
+                                    //   } else if (slug == "sahih-muslim") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             SahihMuslimChaptersssUrdu(),
+                                    //       ),
+                                    //     );
+                                    //   } else if (slug == "al-tirmidhi") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             TirmidhiChapterDetailsUrdu(),
+                                    //       ),
+                                    //     );
+                                    //   } else if (slug == "abu-dawood") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             SunanChapterDetailsUrdu(),
+                                    //       ),
+                                    //     );
+                                    //   } else if (slug == "ibn-e-majah") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             IbneMajahUrdu(),
+                                    //       ),
+                                    //     );
+                                    //   } else if (slug == "sunan-nasai") {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             SunanChaptersssUrdu(),
+                                    //       ),
+                                    //     );
+                                    //   }
+                                    // },
                                     trailing: Text(
                                       urduBookNames[slug] ??
                                           book.bookName ??

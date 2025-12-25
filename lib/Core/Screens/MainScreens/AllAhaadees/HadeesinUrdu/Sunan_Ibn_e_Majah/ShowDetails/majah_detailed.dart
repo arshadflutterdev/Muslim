@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Ibn_e_Majah/Models/majah_details_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,69 +20,127 @@ class MajahDetailedUrdu extends StatefulWidget {
 }
 
 class _MajahDetailedUrduState extends State<MajahDetailedUrdu> {
-  List<Data> hadithList = [];
+  List<Data> haditsss = [];
   bool isLoading = true;
   bool hasError = false;
+  Future<void> getdownloadhadith() async {
+    setState(() {
+      isLoading = true;
+    });
 
-  @override
-  void initState() {
-    super.initState();
-    loadHadiths();
-  }
-
-  Future<void> loadHadiths() async {
-    final prefs = await SharedPreferences.getInstance();
-    final chapterKey = 'ibne_majah_hadiths_${widget.chapterIdss ?? "all"}';
-
-    // 1️⃣ Load cached data
-    final cachedData = prefs.getString(chapterKey);
-    if (cachedData != null) {
-      try {
-        final decoded = jsonDecode(cachedData);
-        final cachedModel = MajahDetail.fromJson(decoded);
-        if (!mounted) return;
-        setState(() {
-          hadithList = cachedModel.hadiths?.data ?? [];
-          isLoading = false;
-        });
-        debugPrint("✅ Loaded cached hadiths");
-      } catch (e) {
-        debugPrint("⚠️ Cache parse error: $e");
-      }
-    }
-
-    // 2️⃣ Fetch from API
     try {
-      final chapterQuery = widget.chapterIdss != null
-          ? "&chapter=${widget.chapterIdss}"
-          : "";
-      final url =
-          "https://hadithapi.com/api/hadiths/?book=ibn-e-majah&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery";
-      final response = await http.get(Uri.parse(url));
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/ibn-e-majah.json");
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        await prefs.setString(chapterKey, jsonEncode(data)); // Save cache
-        final model = MajahDetail.fromJson(data);
-        if (!mounted) return;
+      if (!file.existsSync()) {
+        print("Offline data file not found!");
         setState(() {
-          hadithList = model.hadiths?.data ?? [];
+          haditsss = [];
           isLoading = false;
-          hasError = false;
         });
-        debugPrint("✅ Fetched hadiths from API and cached");
-      } else {
-        throw Exception("API failed: ${response.statusCode}");
+        return;
       }
-    } catch (e) {
-      debugPrint("⚠️ Error fetching hadiths: $e");
-      if (!mounted) return;
+
+      final fileContent = await file.readAsString();
+      final filedecode = jsonDecode(fileContent);
+
+      // filedecode["chapters"] should be a List
+      final chapters = filedecode["chapters"];
+      List<Data> allHadiths = [];
+
+      if (chapters != null && chapters is List) {
+        for (var chapter in chapters) {
+          final hadithMap = chapter["hadiths"];
+          if (hadithMap != null && hadithMap is Map<String, dynamic>) {
+            final hadithList = hadithMap["data"];
+            if (hadithList != null && hadithList is List) {
+              for (var h in hadithList) {
+                allHadiths.add(Data.fromJson(h));
+              }
+            }
+          }
+        }
+      }
+
+      // Filter by ChapterId if provided
+      final filteredHadiths = widget.chapterIdss == null
+          ? allHadiths
+          : allHadiths.where((h) => h.chapterId == widget.chapterIdss).toList();
+
       setState(() {
-        if (hadithList.isEmpty) hasError = true;
+        haditsss = filteredHadiths;
+        isLoading = false;
+      });
+
+      print("Total hadiths loaded: ${haditsss.length}");
+    } catch (e) {
+      print("Error loading hadiths offline: ${e.toString()}");
+      setState(() {
+        haditsss = [];
         isLoading = false;
       });
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    // loadHadiths();
+  }
+
+  // Future<void> loadHadiths() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final chapterKey = 'ibne_majah_hadiths_${widget.chapterIdss ?? "all"}';
+
+  //   // 1️⃣ Load cached data
+  //   final cachedData = prefs.getString(chapterKey);
+  //   if (cachedData != null) {
+  //     try {
+  //       final decoded = jsonDecode(cachedData);
+  //       final cachedModel = MajahDetail.fromJson(decoded);
+  //       if (!mounted) return;
+  //       setState(() {
+  //         hadithList = cachedModel.hadiths?.data ?? [];
+  //         isLoading = false;
+  //       });
+  //       debugPrint("✅ Loaded cached hadiths");
+  //     } catch (e) {
+  //       debugPrint("⚠️ Cache parse error: $e");
+  //     }
+  //   }
+
+  //   // 2️⃣ Fetch from API
+  //   try {
+  //     final chapterQuery = widget.chapterIdss != null
+  //         ? "&chapter=${widget.chapterIdss}"
+  //         : "";
+  //     final url =
+  //         "https://hadithapi.com/api/hadiths/?book=ibn-e-majah&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery";
+  //     final response = await http.get(Uri.parse(url));
+
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       await prefs.setString(chapterKey, jsonEncode(data)); // Save cache
+  //       final model = MajahDetail.fromJson(data);
+  //       if (!mounted) return;
+  //       setState(() {
+  //         hadithList = model.hadiths?.data ?? [];
+  //         isLoading = false;
+  //         hasError = false;
+  //       });
+  //       debugPrint("✅ Fetched hadiths from API and cached");
+  //     } else {
+  //       throw Exception("API failed: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     debugPrint("⚠️ Error fetching hadiths: $e");
+  //     if (!mounted) return;
+  //     setState(() {
+  //       if (hadithList.isEmpty) hasError = true;
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   String formatHadith(Data item) {
     return """
@@ -244,12 +304,12 @@ ${item.hadithEnglish ?? 'N/A'}
               )
             : hasError
             ? const Center(child: Text("No Internet Connection ❌"))
-            : hadithList.isEmpty
+            : haditsss.isEmpty
             ? const Center(child: Text("No hadith found"))
             : ListView.builder(
-                itemCount: hadithList.length,
+                itemCount: haditsss.length,
                 itemBuilder: (context, index) {
-                  final item = hadithList[index];
+                  final item = haditsss[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
