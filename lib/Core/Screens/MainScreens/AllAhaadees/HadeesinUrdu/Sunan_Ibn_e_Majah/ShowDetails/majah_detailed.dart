@@ -85,62 +85,8 @@ class _MajahDetailedUrduState extends State<MajahDetailedUrdu> {
   @override
   void initState() {
     super.initState();
-    // loadHadiths();
+    getdownloadhadith();
   }
-
-  // Future<void> loadHadiths() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final chapterKey = 'ibne_majah_hadiths_${widget.chapterIdss ?? "all"}';
-
-  //   // 1️⃣ Load cached data
-  //   final cachedData = prefs.getString(chapterKey);
-  //   if (cachedData != null) {
-  //     try {
-  //       final decoded = jsonDecode(cachedData);
-  //       final cachedModel = MajahDetail.fromJson(decoded);
-  //       if (!mounted) return;
-  //       setState(() {
-  //         hadithList = cachedModel.hadiths?.data ?? [];
-  //         isLoading = false;
-  //       });
-  //       debugPrint("✅ Loaded cached hadiths");
-  //     } catch (e) {
-  //       debugPrint("⚠️ Cache parse error: $e");
-  //     }
-  //   }
-
-  //   // 2️⃣ Fetch from API
-  //   try {
-  //     final chapterQuery = widget.chapterIdss != null
-  //         ? "&chapter=${widget.chapterIdss}"
-  //         : "";
-  //     final url =
-  //         "https://hadithapi.com/api/hadiths/?book=ibn-e-majah&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery";
-  //     final response = await http.get(Uri.parse(url));
-
-  //     if (response.statusCode == 200) {
-  //       final data = jsonDecode(response.body);
-  //       await prefs.setString(chapterKey, jsonEncode(data)); // Save cache
-  //       final model = MajahDetail.fromJson(data);
-  //       if (!mounted) return;
-  //       setState(() {
-  //         hadithList = model.hadiths?.data ?? [];
-  //         isLoading = false;
-  //         hasError = false;
-  //       });
-  //       debugPrint("✅ Fetched hadiths from API and cached");
-  //     } else {
-  //       throw Exception("API failed: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     debugPrint("⚠️ Error fetching hadiths: $e");
-  //     if (!mounted) return;
-  //     setState(() {
-  //       if (hadithList.isEmpty) hasError = true;
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
 
   String formatHadith(Data item) {
     return """
@@ -364,7 +310,7 @@ ${item.hadithEnglish ?? 'N/A'}
                                       fontFamily: AppFonts.urdufont,
                                       fontSize: 20,
                                       height: 2,
-                                      color: Colors.black,
+                                      color: Color(0Xff7851A9),
                                     ),
                                   ),
                                 ),

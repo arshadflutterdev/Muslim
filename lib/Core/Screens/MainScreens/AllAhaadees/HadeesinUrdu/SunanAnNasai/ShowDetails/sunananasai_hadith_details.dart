@@ -32,7 +32,7 @@ class _SunananasaiHadithDetailsUrduState
 
     try {
       final dir = await getApplicationDocumentsDirectory();
-      final file = File("${dir.path}/ibn-e-majah.json");
+      final file = File("${dir.path}/sunan-nasai.json");
 
       if (!file.existsSync()) {
         print("Offline data file not found!");
@@ -88,71 +88,7 @@ class _SunananasaiHadithDetailsUrduState
   void initState() {
     super.initState();
     getdownloadhadith();
-    // loadHadithData();
   }
-
-  // Future<void> loadHadithData() async {
-  //   final prefs = await SharedPreferences.getInstance();
-
-  //   final cacheKey = "sunan_nasai_chapter_${widget.chapterno}";
-
-  //   // 🔹 1) Load Cached Data
-  //   final cachedData = prefs.getString(cacheKey);
-  //   if (cachedData != null) {
-  //     try {
-  //       final decoded = jsonDecode(cachedData);
-  //       final model = SunanAnNasaiHadithDetails.fromJson(decoded);
-
-  //       setState(() {
-  //         hadithList = model.hadiths?.data ?? [];
-  //         isLoading = false;
-  //         hasError = false;
-  //       });
-
-  //       print("📌 Loaded hadith details from CACHE");
-  //       return; // 🔥 Skip API request
-  //     } catch (e) {
-  //       print("Cache parse error: $e");
-  //     }
-  //   }
-
-  //   // 🔹 2) Fetch From API (only if cache not available)
-  //   try {
-  //     final chapterQuery = widget.chapterno != null
-  //         ? "&chapter=${widget.chapterno}"
-  //         : "";
-
-  //     final url =
-  //         "https://hadithapi.com/api/hadiths/?book=sunan-nasai&apiKey=\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte$chapterQuery";
-
-  //     final response = await http.get(Uri.parse(url));
-
-  //     if (response.statusCode == 200) {
-  //       final data = jsonDecode(response.body);
-
-  //       // Save to cache
-  //       await prefs.setString(cacheKey, jsonEncode(data));
-
-  //       final model = SunanAnNasaiHadithDetails.fromJson(data);
-
-  //       setState(() {
-  //         hadithList = model.hadiths?.data ?? [];
-  //         isLoading = false;
-  //         hasError = false;
-  //       });
-
-  //       print("🌍 Loaded hadith details from API + Cached");
-  //     } else {
-  //       throw Exception("API Error: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     print("Network Error: $e");
-  //     setState(() {
-  //       isLoading = false;
-  //       hasError = true;
-  //     });
-  //   }
-  // }
 
   int selected = 1;
   void showbottom(Data item) {
@@ -357,7 +293,7 @@ class _SunananasaiHadithDetailsUrduState
                                     style: TextStyle(
                                       fontFamily: AppFonts.urdufont,
                                       fontSize: 20,
-                                      color: Colors.black,
+                                      color: Color(0Xff7851A9),
                                     ),
                                   ),
                                 ),

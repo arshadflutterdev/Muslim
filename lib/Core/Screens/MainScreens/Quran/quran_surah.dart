@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 import 'package:Muslim/Core/Const/apptextstyle.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranSurah extends StatefulWidget {
@@ -623,8 +624,7 @@ class _QuranSurahState extends State<QuranSurah> {
                   surahText,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
-                  style: TextStyle(
-                    fontFamily: AppFonts.arabicfont,
+                  style: GoogleFonts.amiriQuran(
                     fontSize: 30,
                     height: 2.2,
                     wordSpacing: 3,

@@ -287,7 +287,7 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                                 item.urduNarrator ?? "",
                                 style: TextStyle(
                                   fontFamily: AppFonts.urdufont,
-                                  color: Colors.black,
+                                  color: Color(0Xff7851A9),
                                   fontSize: 20,
                                   height: 2.2,
                                 ),

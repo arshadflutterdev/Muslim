@@ -346,7 +346,7 @@ class _SunanHadithDetailsUrduState extends State<SunanHadithDetailsUrdu> {
                                       fontFamily: AppFonts.urdufont,
                                       fontSize: 20,
                                       height: 2,
-                                      color: Colors.black,
+                                      color: Color(0Xff7851A9),
                                     ),
                                   ),
                                 ),

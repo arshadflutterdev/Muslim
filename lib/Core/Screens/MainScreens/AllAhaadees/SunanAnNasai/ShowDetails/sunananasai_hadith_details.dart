@@ -292,7 +292,7 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
                                     style: TextStyle(
                                       fontSize: 20,
                                       height: 2,
-                                      color: Colors.black,
+                                      color: Color(0Xff7851A9),
                                     ),
                                   ),
                                 ),

@@ -85,6 +85,7 @@ class _TirmidhiDetailsUrduState extends State<TirmidhiDetailsUrdu> {
   @override
   void initState() {
     super.initState();
+    getdownloadhadith();
   }
 
   // 🔹 Reusable function for copying or sharing Hadith text
@@ -312,7 +313,7 @@ ${item.hadithEnglish ?? 'N/A'}
                                       fontFamily: AppFonts.urdufont,
                                       fontSize: 20,
                                       height: 2.2,
-                                      color: Colors.black,
+                                      color: Color(0Xff7851A9),
                                     ),
                                   ),
                                 ),

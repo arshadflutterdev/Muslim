@@ -280,7 +280,7 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
                                   style: TextStyle(
                                     fontFamily: AppFonts.urdufont,
                                     fontSize: 20,
-                                    color: Colors.black,
+                                    color: Color(0Xff7851A9),
                                     height: 2.2,
                                   ),
                                 ),

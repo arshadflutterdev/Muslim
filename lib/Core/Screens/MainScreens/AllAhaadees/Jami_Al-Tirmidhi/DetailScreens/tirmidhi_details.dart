@@ -309,7 +309,7 @@ ${item.hadithEnglish ?? 'N/A'}
                                 item.englishNarrator!,
                                 style: const TextStyle(
                                   fontSize: 20,
-                                  color: Colors.black,
+                                  color: Color(0Xff7851A9),
                                 ),
                               ),
                             const Gap(25),
