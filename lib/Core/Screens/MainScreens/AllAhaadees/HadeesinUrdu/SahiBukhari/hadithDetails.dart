@@ -87,6 +87,153 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
     getdownloadhadith();
   }
 
+  void showCopyBottom(Data item) {
+    int selectedCopy = 1; // default Arabic
+
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateBottom) {
+            return Container(
+              padding: const EdgeInsets.all(20),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Hadith # ${item.hadithNumber}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // ---------- Arabic Option ----------
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Arabic", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 1,
+                        groupValue: selectedCopy,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCopy = value!;
+                          });
+                          setStateBottom(() {
+                            selectedCopy = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // ---------- Urdu Option ----------
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Urdu", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 2,
+                        groupValue: selectedCopy,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCopy = value!;
+                          });
+                          setStateBottom(() {
+                            selectedCopy = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // ---------- BOTH Option ----------
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Both (Arabic + Urdu)",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 3,
+                        groupValue: selectedCopy,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCopy = value!;
+                          });
+                          setStateBottom(() {
+                            selectedCopy = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ---------- COPY BUTTON ----------
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      String textToCopy;
+
+                      if (selectedCopy == 1) {
+                        textToCopy = item.hadithArabic ?? "";
+                      } else if (selectedCopy == 2) {
+                        textToCopy = item.hadithUrdu ?? "";
+                      } else {
+                        textToCopy =
+                            "Hadith No: ${item.hadithNumber}\nStatus: ${item.status}\n\nArabic:\n${item.hadithArabic}\n\nUrdu Translation:\n${item.hadithUrdu}\n\n🌙 Shared via Muslim App – Be Connected with Allah";
+                      }
+
+                      Clipboard.setData(ClipboardData(text: textToCopy));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Hadith copied to clipboard ✅"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+
+                      Navigator.pop(context); // close bottom sheet
+                    },
+                    child: const Text(
+                      "Copy",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 20, color: Colors.black26),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   int selected = 1;
   void showbottom(Data item) {
     showModalBottomSheet(
@@ -323,36 +470,44 @@ class _HadithdetailsUrduState extends State<HadithdetailsUrdu> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                  onPressed: () async {
-                                    final hadeesText =
-                                        """
-
-Hadith No: ${item.hadithNumber}
-Status: ${item.status}
-
-Arabic:
-${item.hadithArabic}
-
-
-English Translation:
-${item.headingEnglish}
-
-🌙 Shared via Muslim App – Be Connected with Allah
-""";
-                                    await Clipboard.setData(
-                                      ClipboardData(text: hadeesText),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Hadith copied to clipboard ✅",
-                                        ),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
+                                  onPressed: () {
+                                    showCopyBottom(
+                                      item,
+                                    ); // opens the copy bottom sheet
                                   },
                                   icon: const Icon(Icons.copy),
                                 ),
+
+                                //                                 IconButton(
+                                //                                   onPressed: () async {
+                                //                                     final hadeesText =
+                                //                                         """
+
+                                // Hadith No: ${item.hadithNumber}
+                                // Status: ${item.status}
+
+                                // Arabic:
+                                // ${item.hadithArabic}
+
+                                // English Translation:
+                                // ${item.headingEnglish}
+
+                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // """;
+                                //                                     await Clipboard.setData(
+                                //                                       ClipboardData(text: hadeesText),
+                                //                                     );
+                                //                                     ScaffoldMessenger.of(context).showSnackBar(
+                                //                                       const SnackBar(
+                                //                                         content: Text(
+                                //                                           "Hadith copied to clipboard ✅",
+                                //                                         ),
+                                //                                         duration: Duration(seconds: 2),
+                                //                                       ),
+                                //                                     );
+                                //                                   },
+                                //                                   icon: const Icon(Icons.copy),
+                                //                                 ),
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () {

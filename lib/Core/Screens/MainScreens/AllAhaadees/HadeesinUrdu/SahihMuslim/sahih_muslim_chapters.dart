@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:Muslim/Core/Const/app_fonts.dart';
+import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahihMuslim/sahimuslimdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahimuslimdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahmuslim_chapters_model.dart';
 import 'package:Muslim/Core/Services/ad_controller.dart';
@@ -158,7 +159,7 @@ class _SahihMuslimChaptersssUrduState extends State<SahihMuslimChaptersssUrdu> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Sahimuslimdetails(
+                            builder: (context) => SahimuslimdetailsUrdu(
                               ChapterIds: chapter.chapterNumber,
                             ),
                           ),
