@@ -827,8 +827,8 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     "ibn-e-majah": "ابن ماجہ",
     "sunan-nasai": "سنن نسائی",
   };
-
   Future<void> downloadBook(String slug) async {
+    if (!mounted) return; // Check if widget is still in the tree
     setState(() {
       isDownloadingMap[slug] = true;
     });
@@ -851,6 +851,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
       final dir = await getApplicationDocumentsDirectory();
       final file = File("${dir.path}/$slug.json");
 
+      if (!mounted) return; // Check again before setState
       setState(() {
         isDownloadedMap[slug] = file.existsSync();
         isDownloadingMap[slug] = false;
@@ -858,13 +859,15 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
 
       if (isDownloadedMap[slug] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(("$slug downloaded successfully!"))),
+          SnackBar(content: Text("$slug downloaded successfully!")),
         );
       }
     } catch (e) {
-      setState(() {
-        isDownloadingMap[slug] = false;
-      });
+      if (mounted) {
+        setState(() {
+          isDownloadingMap[slug] = false;
+        });
+      }
       print("Download error: $e");
     }
   }
@@ -875,6 +878,8 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
 
     if (file.existsSync()) {
       await file.delete();
+
+      if (!mounted) return; // check before setState
       setState(() {
         isDownloadedMap[slug] = false;
         isDownloadingMap[slug] = false;
