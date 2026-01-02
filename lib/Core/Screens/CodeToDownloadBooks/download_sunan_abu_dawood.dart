@@ -29,7 +29,12 @@ class DownloadSunanAbuDawood {
           if (hadithresponse.statusCode == 200) {
             final hadithdecode = jsonDecode(hadithresponse.body);
             final hadithDetails = HadithDetails.fromJson(hadithdecode);
-            hadiths["hadiths"] = hadithDetails.hadiths?.toJson();
+            // hadiths["hadiths"] = hadithDetails.hadiths?.toJson();
+            hadiths["hadiths"] = {
+              "data": hadithDetails.hadiths?.data
+                  ?.map((h) => h.toJson())
+                  .toList(),
+            };
           } else {
             throw Exception("failed to fetch details");
           }

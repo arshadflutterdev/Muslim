@@ -24,7 +24,7 @@ import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SahihMu
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/SunanAnNasai/ShowDetails/sunan_chapters.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/chapterdetails.dart';
 import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_chapter_details.dart';
-import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
+
 import 'package:Muslim/Data/Models/ahadeesmodel.dart';
 
 class Ahadees extends StatefulWidget {
@@ -39,9 +39,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   List<Books> booksList = [];
   bool isLoading = true;
   bool hasError = false;
-
-  // Map<String, bool> isDownloadingMap = {};
-  // Map<String, bool> isDownloadedMap = {};
 
   @override
   void initState() {
@@ -63,17 +60,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     _controller.dispose();
     super.dispose();
   }
-
-  // Future<void> checkAllDownloads() async {
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   for (var book in booksList.take(6)) {
-  //     final file = File("${dir.path}/${book.bookSlug}.json");
-  //     setState(() {
-  //       isDownloadedMap[book.bookSlug ?? ""] = file.existsSync();
-  //       isDownloadingMap[book.bookSlug ?? ""] = false;
-  //     });
-  //   }
-  // }
 
   Future<void> loadBooks() async {
     try {
@@ -235,70 +221,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   };
   final DownloadService downloadService = DownloadService.instance;
 
-  // Future<void> downloadBook(String slug) async {
-  //   if (!mounted) return; // Check if widget is still in the tree
-  //   setState(() {
-  //     isDownloadingMap[slug] = true;
-  //   });
-
-  //   try {
-  //     if (slug == "sahih-bukhari") {
-  //       await DownloadSahiBukhar().downloadbook();
-  //     } else if (slug == "sahih-muslim") {
-  //       await DownloadSahimuslim().downloadsahimuslim();
-  //     } else if (slug == "al-tirmidhi") {
-  //       await DownloadJamialtirmidhi().downloadjamiatirmidhi();
-  //     } else if (slug == "abu-dawood") {
-  //       await DownloadSunanAbuDawood().getdownload();
-  //     } else if (slug == "ibn-e-majah") {
-  //       await DownloadSunanIbnMajah().getdownloadbook();
-  //     } else if (slug == "sunan-nasai") {
-  //       await DownloadSunanAnnasai().getDownload();
-  //     }
-
-  //     final dir = await getApplicationDocumentsDirectory();
-  //     final file = File("${dir.path}/$slug.json");
-
-  //     if (!mounted) return; // Check again before setState
-  //     setState(() {
-  //       isDownloadedMap[slug] = file.existsSync();
-  //       isDownloadingMap[slug] = false;
-  //     });
-
-  //     if (isDownloadedMap[slug] == true) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text("$slug downloaded successfully!")),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     if (mounted) {
-  //       setState(() {
-  //         isDownloadingMap[slug] = false;
-  //       });
-  //     }
-  //     print("Download error: $e");
-  //   }
-  // }
-
-  // Future<void> deleteBook(String slug) async {
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   final file = File("${dir.path}/$slug.json");
-
-  //   if (file.existsSync()) {
-  //     await file.delete();
-
-  //     if (!mounted) return; // check before setState
-  //     setState(() {
-  //       isDownloadedMap[slug] = false;
-  //       isDownloadingMap[slug] = false;
-  //     });
-
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text("$slug deleted successfully!")));
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -388,49 +310,25 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                         children: [
                                           IconButton(
                                             onPressed: () async {
-                                              // if (isDownloadingMap[slug] ==
-                                              //     true)
-                                              //   return;
-                                              // if (isDownloadedMap[slug] ==
-                                              //     true) {
-                                              //   await deleteBook(slug);
-                                              // } else {
-                                              //   await downloadBook(slug);
-                                              // }
+                                              // If already downloading, do nothing
                                               if (downloadService.isDownloading(
                                                 slug,
                                               ))
                                                 return;
 
+                                              // If already downloaded, delete it
                                               if (downloadService.isDownloaded(
                                                 slug,
                                               )) {
                                                 await downloadService
                                                     .deleteBook(slug);
                                               } else {
-                                                await downloadService
-                                                    .downloadBook(slug);
+                                                // Queue the download instead of calling downloadBook directly
+                                                downloadService.queueDownload(
+                                                  slug,
+                                                );
                                               }
                                             },
-                                            // icon: isDownloadingMap[slug] == true
-                                            //     ? SizedBox(
-                                            //         width: 24,
-                                            //         height: 24,
-                                            //         child:
-                                            //             CircularProgressIndicator(
-                                            //               color: Colors.green,
-                                            //               strokeWidth: 2,
-                                            //             ),
-                                            //       )
-                                            //     : isDownloadedMap[slug] == true
-                                            //     ? Icon(
-                                            //         Icons.delete,
-                                            //         color: Colors.red,
-                                            //       )
-                                            //     : Icon(
-                                            //         Icons.download,
-                                            //         color: Colors.black54,
-                                            //       ),
                                             icon:
                                                 downloadService.isDownloading(
                                                   slug,
@@ -456,6 +354,50 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     color: Colors.black54,
                                                   ),
                                           ),
+
+                                          // IconButton(
+                                          //   onPressed: () async {
+                                          //     if (downloadService.isDownloading(
+                                          //       slug,
+                                          //     ))
+                                          //       return;
+
+                                          //     if (downloadService.isDownloaded(
+                                          //       slug,
+                                          //     )) {
+                                          //       await downloadService
+                                          //           .deleteBook(slug);
+                                          //     } else {
+                                          //       await downloadService
+                                          //           .downloadBook(slug);
+                                          //     }
+                                          //   },
+
+                                          //   icon:
+                                          //       downloadService.isDownloading(
+                                          //         slug,
+                                          //       )
+                                          //       ? const SizedBox(
+                                          //           width: 24,
+                                          //           height: 24,
+                                          //           child:
+                                          //               CircularProgressIndicator(
+                                          //                 color: Colors.green,
+                                          //                 strokeWidth: 2,
+                                          //               ),
+                                          //         )
+                                          //       : downloadService.isDownloaded(
+                                          //           slug,
+                                          //         )
+                                          //       ? const Icon(
+                                          //           Icons.delete,
+                                          //           color: Colors.red,
+                                          //         )
+                                          //       : const Icon(
+                                          //           Icons.download,
+                                          //           color: Colors.black54,
+                                          //         ),
+                                          // ),
                                           Text(
                                             book.chaptersCount ?? "",
                                             style: const TextStyle(
@@ -533,50 +475,25 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                           Gap(10),
                                           IconButton(
                                             onPressed: () async {
-                                              // if (isDownloadingMap[slug] ==
-                                              //     true)
-                                              //   return;
-                                              // if (isDownloadedMap[slug] ==
-                                              //     true) {
-                                              //   await deleteBook(slug);
-                                              // } else {
-                                              //   await downloadBook(slug);
-                                              // }
+                                              // If already downloading, do nothing
                                               if (downloadService.isDownloading(
                                                 slug,
                                               ))
                                                 return;
 
+                                              // If already downloaded, delete it
                                               if (downloadService.isDownloaded(
                                                 slug,
                                               )) {
                                                 await downloadService
                                                     .deleteBook(slug);
                                               } else {
-                                                await downloadService
-                                                    .downloadBook(slug);
+                                                // Queue the download instead of calling downloadBook directly
+                                                downloadService.queueDownload(
+                                                  slug,
+                                                );
                                               }
                                             },
-
-                                            // icon: isDownloadingMap[slug] == true
-                                            //     ? SizedBox(
-                                            //         width: 24,
-                                            //         height: 24,
-                                            //         child:
-                                            //             CircularProgressIndicator(
-                                            //               color: Colors.green,
-                                            //               strokeWidth: 2,
-                                            //             ),
-                                            //       )
-                                            //     : isDownloadedMap[slug] == true
-                                            //     ? Icon(
-                                            //         Icons.delete,
-                                            //         color: Colors.red,
-                                            //       )
-                                            //     : Icon(
-                                            //         Icons.download,
-                                            //         color: Colors.black54,
-                                            //       ),
                                             icon:
                                                 downloadService.isDownloading(
                                                   slug,
@@ -602,6 +519,50 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     color: Colors.black54,
                                                   ),
                                           ),
+
+                                          // IconButton(
+                                          //   onPressed: () async {
+                                          //     if (downloadService.isDownloading(
+                                          //       slug,
+                                          //     ))
+                                          //       return;
+
+                                          //     if (downloadService.isDownloaded(
+                                          //       slug,
+                                          //     )) {
+                                          //       await downloadService
+                                          //           .deleteBook(slug);
+                                          //     } else {
+                                          //       await downloadService
+                                          //           .downloadBook(slug);
+                                          //     }
+                                          //   },
+
+                                          //   icon:
+                                          //       downloadService.isDownloading(
+                                          //         slug,
+                                          //       )
+                                          //       ? const SizedBox(
+                                          //           width: 24,
+                                          //           height: 24,
+                                          //           child:
+                                          //               CircularProgressIndicator(
+                                          //                 color: Colors.green,
+                                          //                 strokeWidth: 2,
+                                          //               ),
+                                          //         )
+                                          //       : downloadService.isDownloaded(
+                                          //           slug,
+                                          //         )
+                                          //       ? const Icon(
+                                          //           Icons.delete,
+                                          //           color: Colors.red,
+                                          //         )
+                                          //       : const Icon(
+                                          //           Icons.download,
+                                          //           color: Colors.black54,
+                                          //         ),
+                                          // ),
                                         ],
                                       ),
                                     ),
