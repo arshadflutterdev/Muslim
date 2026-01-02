@@ -87,6 +87,144 @@ class _HadithdetailsState extends State<Hadithdetails> {
     getdownloadhadith();
   }
 
+  //here is bottom sheet for copy
+  void showCopyBottom(Data item) {
+    int copySelected = 1;
+
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateBottom) {
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Copy Hadith # ${item.hadithNumber}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Arabic
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Arabic", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        value: 1,
+                        groupValue: copySelected,
+                        activeColor: Colors.green,
+                        onChanged: (value) {
+                          setStateBottom(() {
+                            copySelected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // English
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("English", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        value: 2,
+                        groupValue: copySelected,
+                        activeColor: Colors.green,
+                        onChanged: (value) {
+                          setStateBottom(() {
+                            copySelected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // Both
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Both (Arabic + English)",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Radio(
+                        value: 3,
+                        groupValue: copySelected,
+                        activeColor: Colors.green,
+                        onChanged: (value) {
+                          setStateBottom(() {
+                            copySelected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // COPY BUTTON
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      String copyText;
+
+                      if (copySelected == 1) {
+                        copyText = item.hadithArabic ?? "";
+                      } else if (copySelected == 2) {
+                        copyText = item.hadithEnglish ?? "";
+                      } else {
+                        copyText =
+                            "${item.hadithArabic ?? ""}\n\n${item.hadithEnglish ?? ""}";
+                      }
+
+                      await Clipboard.setData(ClipboardData(text: copyText));
+
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Hadith copied to clipboard ✅"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Copy",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 18, color: Colors.black38),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  //here is bottom sheet for share
   void showbottom(Data item) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
@@ -311,36 +449,42 @@ class _HadithdetailsState extends State<Hadithdetails> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                  onPressed: () async {
-                                    final hadeesText =
-                                        """
-
-Hadith No: ${item.hadithNumber}
-Status: ${item.status}
-
-Arabic:
-${item.hadithArabic}
-
-
-English Translation:
-${item.headingEnglish}
-
-🌙 Shared via Muslim App – Be Connected with Allah
-""";
-                                    await Clipboard.setData(
-                                      ClipboardData(text: hadeesText),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Hadith copied to clipboard ✅",
-                                        ),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
+                                  onPressed: () {
+                                    showCopyBottom(item);
                                   },
                                   icon: const Icon(Icons.copy),
                                 ),
+
+                                //                                 IconButton(
+                                //                                   onPressed: () async {
+                                //                                     final hadeesText =
+                                //                                         """
+
+                                // Hadith No: ${item.hadithNumber}
+                                // Status: ${item.status}
+
+                                // Arabic:
+                                // ${item.hadithArabic}
+
+                                // English Translation:
+                                // ${item.headingEnglish}
+
+                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // """;
+                                //                                     await Clipboard.setData(
+                                //                                       ClipboardData(text: hadeesText),
+                                //                                     );
+                                //                                     ScaffoldMessenger.of(context).showSnackBar(
+                                //                                       const SnackBar(
+                                //                                         content: Text(
+                                //                                           "Hadith copied to clipboard ✅",
+                                //                                         ),
+                                //                                         duration: Duration(seconds: 2),
+                                //                                       ),
+                                //                                     );
+                                //                                   },
+                                //                                   icon: const Icon(Icons.copy),
+                                //                                 ),
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () {
