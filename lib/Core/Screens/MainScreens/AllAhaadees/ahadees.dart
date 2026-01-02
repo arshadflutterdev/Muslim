@@ -313,8 +313,21 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                               // If already downloading, do nothing
                                               if (downloadService.isDownloading(
                                                 slug,
-                                              ))
+                                              )) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      "A download is already in progress. Please wait!",
+                                                    ),
+                                                    duration: Duration(
+                                                      seconds: 2,
+                                                    ),
+                                                  ),
+                                                );
                                                 return;
+                                              }
 
                                               // If already downloaded, delete it
                                               if (downloadService.isDownloaded(
@@ -324,7 +337,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     .deleteBook(slug);
                                               } else {
                                                 // Queue the download instead of calling downloadBook directly
-                                                downloadService.queueDownload(
+                                                downloadService.downloadBook(
                                                   slug,
                                                 );
                                               }
@@ -478,8 +491,21 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                               // If already downloading, do nothing
                                               if (downloadService.isDownloading(
                                                 slug,
-                                              ))
+                                              )) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                                    ),
+                                                    duration: Duration(
+                                                      seconds: 2,
+                                                    ),
+                                                  ),
+                                                );
                                                 return;
+                                              }
 
                                               // If already downloaded, delete it
                                               if (downloadService.isDownloaded(
@@ -489,7 +515,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     .deleteBook(slug);
                                               } else {
                                                 // Queue the download instead of calling downloadBook directly
-                                                downloadService.queueDownload(
+                                                downloadService.downloadBook(
                                                   slug,
                                                 );
                                               }

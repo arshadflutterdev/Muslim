@@ -1,16 +1,88 @@
+// // import 'dart:io';
+// // import 'package:flutter/material.dart';
+// // import 'package:path_provider/path_provider.dart';
+
+// // import '../Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
+// // import '../Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
+// // import '../Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
+// // import '../Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
+// // import '../Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
+// // import '../Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
+
+// // class DownloadService extends ChangeNotifier {
+// //   /// 🔥 Singleton
+// //   static final DownloadService instance = DownloadService._internal();
+// //   DownloadService._internal();
+
+// //   final Map<String, bool> _isDownloading = {};
+// //   final Map<String, bool> _isDownloaded = {};
+
+// //   bool isDownloading(String slug) => _isDownloading[slug] == true;
+// //   bool isDownloaded(String slug) => _isDownloaded[slug] == true;
+
+// //   Future<void> checkDownloaded(String slug) async {
+// //     final dir = await getApplicationDocumentsDirectory();
+// //     final file = File("${dir.path}/$slug.json");
+// //     _isDownloaded[slug] = file.existsSync();
+// //     notifyListeners();
+// //   }
+
+// //   Future<void> downloadBook(String slug) async {
+// //     if (_isDownloading[slug] == true) return;
+
+// //     _isDownloading[slug] = true;
+// //     notifyListeners();
+
+// //     try {
+// //       if (slug == "sahih-bukhari") {
+// //         await DownloadSahiBukhar().downloadbook();
+// //       } else if (slug == "sahih-muslim") {
+// //         await DownloadSahimuslim().downloadsahimuslim();
+// //       } else if (slug == "al-tirmidhi") {
+// //         await DownloadJamialtirmidhi().downloadjamiatirmidhi();
+// //       } else if (slug == "abu-dawood") {
+// //         await DownloadSunanAbuDawood().getdownload();
+// //       } else if (slug == "ibn-e-majah") {
+// //         await DownloadSunanIbnMajah().getdownloadbook();
+// //       } else if (slug == "sunan-nasai") {
+// //         await DownloadSunanAnnasai().getDownload();
+// //       }
+
+// //       final dir = await getApplicationDocumentsDirectory();
+// //       final file = File("${dir.path}/$slug.json");
+// //       _isDownloaded[slug] = file.existsSync();
+// //     } catch (e) {
+// //       debugPrint("Download error: $e");
+// //     } finally {
+// //       _isDownloading[slug] = false;
+// //       notifyListeners();
+// //     }
+// //   }
+
+// //   Future<void> deleteBook(String slug) async {
+// //     final dir = await getApplicationDocumentsDirectory();
+// //     final file = File("${dir.path}/$slug.json");
+
+// //     if (file.existsSync()) {
+// //       await file.delete();
+// //       _isDownloaded[slug] = false;
+// //       notifyListeners();
+// //     }
+// //   }
+// // }
+
 // import 'dart:io';
+
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
+// import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
 // import 'package:flutter/material.dart';
 // import 'package:path_provider/path_provider.dart';
 
-// import '../Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
-// import '../Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
-// import '../Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
-// import '../Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
-// import '../Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
-// import '../Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
-
 // class DownloadService extends ChangeNotifier {
-//   /// 🔥 Singleton
 //   static final DownloadService instance = DownloadService._internal();
 //   DownloadService._internal();
 
@@ -27,8 +99,9 @@
 //     notifyListeners();
 //   }
 
+//   /// Start download **independently** (parallel)
 //   Future<void> downloadBook(String slug) async {
-//     if (_isDownloading[slug] == true) return;
+//     if (_isDownloading[slug] == true) return; // already downloading
 
 //     _isDownloading[slug] = true;
 //     notifyListeners();
@@ -70,35 +143,35 @@
 //     }
 //   }
 // }
-
 import 'dart:io';
+
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
+import 'package:Muslim/Core/Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
-import '../Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
-import '../Screens/CodeToDownloadBooks/download_sahi-bukhari.dart';
-import '../Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
-import '../Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
-import '../Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
-
 class DownloadService extends ChangeNotifier {
-  /// 🔥 Singleton
+  /// Singleton instance
   static final DownloadService instance = DownloadService._internal();
   DownloadService._internal();
 
-  /// Track downloading and downloaded books
   final Map<String, bool> _isDownloading = {};
   final Map<String, bool> _isDownloaded = {};
 
-  /// Optional queue for multiple downloads
-  final List<String> _queue = [];
-  final int maxConcurrentDownloads = 3;
+  final List<_DownloadTask> _queue = [];
+  bool _isProcessingQueue = false;
 
+  /// Check if a slug is currently downloading
   bool isDownloading(String slug) => _isDownloading[slug] == true;
+
+  /// Check if a slug is already downloaded
   bool isDownloaded(String slug) => _isDownloaded[slug] == true;
 
-  /// Check if a book is already downloaded
+  /// Check local file to update downloaded state
   Future<void> checkDownloaded(String slug) async {
     final dir = await getApplicationDocumentsDirectory();
     final file = File("${dir.path}/$slug.json");
@@ -106,66 +179,59 @@ class DownloadService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Queue a book for download (handles multiple downloads safely)
-  void queueDownload(String slug) {
-    if (!_queue.contains(slug)) {
-      _queue.add(slug);
-      _processQueue();
-    }
+  /// Queue a download task
+  void downloadBook(String slug) {
+    // Avoid adding duplicate tasks
+    if (_queue.any((task) => task.slug == slug)) return;
+
+    _queue.add(_DownloadTask(slug: slug));
+    _processQueue();
   }
 
-  /// Process the download queue
+  /// Process the download queue (only one at a time)
   void _processQueue() async {
-    final activeDownloads = _isDownloading.values.where((v) => v).length;
-    if (_queue.isEmpty || activeDownloads >= maxConcurrentDownloads) return;
+    if (_isProcessingQueue || _queue.isEmpty) return;
 
-    final nextSlug = _queue.removeAt(0);
-    await downloadBook(nextSlug);
-    _processQueue(); // continue queue
-  }
+    _isProcessingQueue = true;
 
-  /// Download a book
-  Future<void> downloadBook(String slug) async {
-    if (_isDownloading[slug] == true) return;
+    while (_queue.isNotEmpty) {
+      final task = _queue.removeAt(0);
+      final slug = task.slug;
 
-    _isDownloading[slug] = true;
-    notifyListeners();
+      if (isDownloading(slug)) continue;
 
-    try {
-      switch (slug) {
-        case "sahih-bukhari":
-          await DownloadSahiBukhar().downloadbook();
-          break;
-        case "sahih-muslim":
-          await DownloadSahimuslim().downloadsahimuslim();
-          break;
-        case "al-tirmidhi":
-          await DownloadJamialtirmidhi().downloadjamiatirmidhi();
-          break;
-        case "abu-dawood":
-          await DownloadSunanAbuDawood().getdownload();
-          break;
-        case "ibn-e-majah":
-          await DownloadSunanIbnMajah().getdownloadbook();
-          break;
-        case "sunan-nasai":
-          await DownloadSunanAnnasai().getDownload();
-          break;
-        default:
-          throw Exception("Unknown book slug: $slug");
-      }
-
-      // Check if file exists
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File("${dir.path}/$slug.json");
-      _isDownloaded[slug] = file.existsSync();
-    } catch (e) {
-      debugPrint("Download error for $slug: $e");
-      _isDownloaded[slug] = false; // mark failed downloads
-    } finally {
-      _isDownloading[slug] = false;
+      _isDownloading[slug] = true;
       notifyListeners();
+
+      try {
+        // Call the correct download function for each book
+        if (slug == "sahih-bukhari") {
+          await DownloadSahiBukhar().downloadbook();
+        } else if (slug == "sahih-muslim") {
+          await DownloadSahimuslim().downloadsahimuslim();
+        } else if (slug == "al-tirmidhi") {
+          await DownloadJamialtirmidhi().downloadjamiatirmidhi();
+        } else if (slug == "abu-dawood") {
+          await DownloadSunanAbuDawood().getdownload();
+        } else if (slug == "ibn-e-majah") {
+          await DownloadSunanIbnMajah().getdownloadbook();
+        } else if (slug == "sunan-nasai") {
+          await DownloadSunanAnnasai().getDownload();
+        }
+
+        // Check if file exists locally
+        final dir = await getApplicationDocumentsDirectory();
+        final file = File("${dir.path}/$slug.json");
+        _isDownloaded[slug] = file.existsSync();
+      } catch (e) {
+        debugPrint("Download error for $slug: $e");
+      } finally {
+        _isDownloading[slug] = false;
+        notifyListeners();
+      }
     }
+
+    _isProcessingQueue = false;
   }
 
   /// Delete a downloaded book
@@ -179,4 +245,9 @@ class DownloadService extends ChangeNotifier {
       notifyListeners();
     }
   }
+}
+
+class _DownloadTask {
+  final String slug;
+  _DownloadTask({required this.slug});
 }
