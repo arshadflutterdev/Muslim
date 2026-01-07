@@ -84,6 +84,151 @@ class _SunananasaiHadithDetailsUrduState
     }
   }
 
+  void showCopyBottomSheet(Data item) {
+    int selected = 1; // default Arabic
+
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateBottom) {
+            return Container(
+              padding: const EdgeInsets.all(20),
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Hadith # ${item.hadithNumber}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Arabic Option
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Arabic", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 1,
+                        groupValue: selected,
+                        onChanged: (value) {
+                          setState(() {
+                            selected = value!;
+                          });
+                          setStateBottom(() {
+                            selected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // Urdu Option
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Urdu", style: TextStyle(fontSize: 18)),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 2,
+                        groupValue: selected,
+                        onChanged: (value) {
+                          setState(() {
+                            selected = value!;
+                          });
+                          setStateBottom(() {
+                            selected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // Both Option
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Both (Arabic + Urdu)",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Radio(
+                        activeColor: Colors.green,
+                        value: 3,
+                        groupValue: selected,
+                        onChanged: (value) {
+                          setState(() {
+                            selected = value!;
+                          });
+                          setStateBottom(() {
+                            selected = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // COPY BUTTON
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      String textToCopy;
+
+                      if (selected == 1) {
+                        textToCopy = item.hadithArabic ?? '';
+                      } else if (selected == 2) {
+                        textToCopy = item.hadithUrdu ?? '';
+                      } else {
+                        textToCopy =
+                            "${item.hadithArabic ?? ''}\n\n${item.hadithUrdu ?? ''}";
+                      }
+
+                      await Clipboard.setData(ClipboardData(text: textToCopy));
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Hadith copied to clipboard ✅"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Copy",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 20, color: Colors.black26),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -329,34 +474,43 @@ class _SunananasaiHadithDetailsUrduState
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                  onPressed: () async {
-                                    final hadeesText =
-                                        """
-Hadith No: ${item.hadithNumber}
-Status: ${item.status}
-
-Arabic:
-${item.hadithArabic}
-
-English Translation:
-${item.hadithEnglish}
-
-🌙 Shared via Muslim App – Be Connected with Allah
-""";
-                                    await Clipboard.setData(
-                                      ClipboardData(text: hadeesText),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Hadith copied to clipboard ✅",
-                                        ),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
+                                  onPressed: () {
+                                    showCopyBottomSheet(
+                                      item,
+                                    ); // opens interactive copy options
                                   },
                                   icon: const Icon(Icons.copy),
                                 ),
+
+                                //                                 IconButton(
+                                //                                   onPressed: () async {
+                                //                                     final hadeesText =
+                                //                                         """
+                                // Hadith No: ${item.hadithNumber}
+                                // Status: ${item.status}
+
+                                // Arabic:
+                                // ${item.hadithArabic}
+
+                                // English Translation:
+                                // ${item.hadithEnglish}
+
+                                // 🌙 Shared via Muslim App – Be Connected with Allah
+                                // """;
+                                //                                     await Clipboard.setData(
+                                //                                       ClipboardData(text: hadeesText),
+                                //                                     );
+                                //                                     ScaffoldMessenger.of(context).showSnackBar(
+                                //                                       const SnackBar(
+                                //                                         content: Text(
+                                //                                           "Hadith copied to clipboard ✅",
+                                //                                         ),
+                                //                                         duration: Duration(seconds: 2),
+                                //                                       ),
+                                //                                     );
+                                //                                   },
+                                //                                   icon: const Icon(Icons.copy),
+                                //                                 ),
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () {
