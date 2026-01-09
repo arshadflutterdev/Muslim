@@ -341,7 +341,7 @@ class _BukhariState extends State<Bukhari> {
                               MaterialPageRoute(
                                 builder: (context) => Hadithdetails(
                                   ChapterId: hadith.chapterId,
-                                  hadithNumber: hadith.hadithNumber.toString(),
+                                  hadithNumber: hadith.hadithNumber,
                                 ),
                               ),
                             );
@@ -356,16 +356,6 @@ class _BukhariState extends State<Bukhari> {
                                 style: const TextStyle(fontSize: 16),
                               ),
                               subtitle: Text(hadith.hadithEnglish ?? ""),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Hadithdetails(
-                                      ChapterId: hadith.chapterId,
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
                           ),
                         );

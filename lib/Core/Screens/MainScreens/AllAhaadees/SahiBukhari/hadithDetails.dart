@@ -23,6 +23,8 @@ class _HadithdetailsState extends State<Hadithdetails> {
   ScrollController scontroller = ScrollController();
   List<Data> haditsss = [];
   bool isLoading = true;
+  List<GlobalKey> hadithKeys = [];
+
   int selected = 1;
   Future<void> getdownloadhadith() async {
     setState(() {
@@ -67,7 +69,7 @@ class _HadithdetailsState extends State<Hadithdetails> {
       final filteredHadiths = widget.ChapterId == null
           ? allHadiths
           : allHadiths.where((h) => h.chapterId == widget.ChapterId).toList();
-
+      hadithKeys = List.generate(filteredHadiths.length, (_) => GlobalKey());
       setState(() {
         haditsss = filteredHadiths;
         isLoading = false;
@@ -78,10 +80,10 @@ class _HadithdetailsState extends State<Hadithdetails> {
         );
         if (index != -1) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            scontroller.animateTo(
-              index * 200,
-              duration: Duration(microseconds: 500),
-              curve: Curves.easeInOut,
+            Scrollable.ensureVisible(
+              hadithKeys[index].currentContext!,
+              duration: Duration(milliseconds: 500),
+              alignment: 0.5, // center me scroll karega
             );
           });
         }
@@ -401,6 +403,7 @@ class _HadithdetailsState extends State<Hadithdetails> {
                 itemBuilder: (context, index) {
                   final item = haditsss[index];
                   return Padding(
+                    key: hadithKeys[index],
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       width: double.infinity,
