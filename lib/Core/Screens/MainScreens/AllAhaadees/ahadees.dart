@@ -337,9 +337,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     .deleteBook(slug);
                                               } else {
                                                 // Queue the download instead of calling downloadBook directly
-                                                downloadService.downloadBook(
-                                                  slug,
-                                                );
+                                                // downloadService.downloadBook(
+                                                //   slug,
+                                                // );
+                                                DownloadService.instance
+                                                    .downloadBook(
+                                                      context,
+                                                      slug,
+                                                    );
                                               }
                                             },
                                             icon:
@@ -515,9 +520,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                     .deleteBook(slug);
                                               } else {
                                                 // Queue the download instead of calling downloadBook directly
-                                                downloadService.downloadBook(
-                                                  slug,
-                                                );
+                                                // downloadService.downloadBook(
+                                                //   slug,
+                                                // );
+                                                DownloadService.instance
+                                                    .downloadBook(
+                                                      context,
+                                                      slug,
+                                                    );
                                               }
                                             },
                                             icon:
