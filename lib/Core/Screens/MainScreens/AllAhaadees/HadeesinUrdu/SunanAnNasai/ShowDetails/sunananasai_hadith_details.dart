@@ -374,6 +374,15 @@ class _SunananasaiHadithDetailsUrduState
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
