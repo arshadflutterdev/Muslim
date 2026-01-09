@@ -193,30 +193,32 @@ class _BukhariUrduState extends State<BukhariUrdu> {
                   return Card(
                     elevation: 3,
                     color: Colors.white,
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HadithdetailsUrdu(
-                              ChapterId: chapter.id.toString(),
+                    child: Container(
+                      height: 100,
+                      width: double.infinity,
+                      color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              chapter.chapterUrdu ?? '',
+                              style: TextStyle(
+                                fontFamily: AppFonts.urdufont,
+                                fontSize: 25,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      title: Text(
-                        chapter.chapterUrdu ?? '',
-                        style: TextStyle(
-                          fontFamily: AppFonts.urdufont,
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                      trailing: Text(
-                        hadithlength,
-                        style: TextStyle(
-                          fontFamily: AppFonts.arabicfont,
-                          fontSize: 18,
+                            Spacer(),
+                            Text(
+                              hadithlength,
+                              style: TextStyle(
+                                fontFamily: AppFonts.arabicfont,
+                                // fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
