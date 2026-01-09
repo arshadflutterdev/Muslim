@@ -194,28 +194,41 @@ class _BukhariUrduState extends State<BukhariUrdu> {
                     elevation: 3,
                     color: Colors.white,
                     child: Container(
-                      height: 100,
+                      // height: 80,
                       width: double.infinity,
-                      color: Colors.red,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 12,
+                        ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
                           children: [
-                            Text(
-                              chapter.chapterUrdu ?? '',
-                              style: TextStyle(
-                                fontFamily: AppFonts.urdufont,
-                                fontSize: 25,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Spacer(),
                             Text(
                               hadithlength,
                               style: TextStyle(
                                 fontFamily: AppFonts.arabicfont,
-                                // fontSize: 18,
+                                fontSize: 16,
+                              ),
+                            ),
+
+                            Expanded(
+                              child: Text(
+                                maxLines: 3, // 🔴 important
+                                overflow: TextOverflow.ellipsis, // 🔴 important
+                                textAlign: TextAlign.right, // Urdu ke liye
+                                chapter.chapterUrdu ?? '',
+                                style: TextStyle(
+                                  fontFamily: AppFonts.urdufont,
+                                  fontSize: 22,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],
