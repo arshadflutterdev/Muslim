@@ -56,6 +56,11 @@ class _SunananasaiHadithDetailsState extends State<SunananasaiHadithDetails> {
             final hadithList = hadithMap["data"];
             if (hadithList != null && hadithList is List) {
               for (var h in hadithList) {
+                final data = Data.fromJson(h);
+                print("here i print h $h");
+                print(
+                  "Hadith #${data.hadithNumber} narrator: ${data.englishNarrator}",
+                );
                 allHadiths.add(Data.fromJson(h));
               }
             }
