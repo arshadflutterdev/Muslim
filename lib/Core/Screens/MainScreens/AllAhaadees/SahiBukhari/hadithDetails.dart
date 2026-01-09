@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Hadithdetails extends StatefulWidget {
@@ -20,7 +21,8 @@ class Hadithdetails extends StatefulWidget {
 }
 
 class _HadithdetailsState extends State<Hadithdetails> {
-  ScrollController scontroller = ScrollController();
+  ItemScrollController itemScrollController = ItemScrollController();
+
   List<Data> haditsss = [];
   bool isLoading = true;
   List<GlobalKey> hadithKeys = [];
@@ -78,14 +80,22 @@ class _HadithdetailsState extends State<Hadithdetails> {
         final index = haditsss.indexWhere(
           (h) => h.hadithNumber.toString() == widget.hadithNumber,
         );
-        if (index != -1) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Scrollable.ensureVisible(
-              hadithKeys[index].currentContext!,
-              duration: Duration(milliseconds: 500),
-              alignment: 0.5, // center me scroll karega
-            );
-          });
+        if (widget.hadithNumber != null) {
+          final index = haditsss.indexWhere(
+            (h) => h.hadithNumber.toString() == widget.hadithNumber,
+          );
+          if (index != -1) {
+            // Approximate height of each hadith item
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              itemScrollController.scrollTo(
+                index: index,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                alignment: 0.1,
+              );
+            });
+          }
         }
       }
 
@@ -397,8 +407,8 @@ class _HadithdetailsState extends State<Hadithdetails> {
               )
             : haditsss.isEmpty
             ? const Center(child: Text("No Internet Connection"))
-            : ListView.builder(
-                controller: scontroller,
+            : ScrollablePositionedList.builder(
+                itemScrollController: itemScrollController,
                 itemCount: haditsss.length,
                 itemBuilder: (context, index) {
                   final item = haditsss[index];
