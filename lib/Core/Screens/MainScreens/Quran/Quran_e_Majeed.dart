@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:Muslim/Core/Const/apptextstyle.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Quran/favscreen.dart';
-import 'package:Muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
-import 'package:Muslim/Core/Widgets/Buttons/customtextbutton.dart';
-import 'package:Muslim/Core/Widgets/Buttons/iconbutton.dart';
+import 'package:muslim/Core/Const/apptextstyle.dart';
+import 'package:muslim/Core/Screens/MainScreens/Quran/favscreen.dart';
+import 'package:muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
+import 'package:muslim/Core/Widgets/Buttons/customtextbutton.dart';
+import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranEMajeed extends StatefulWidget {

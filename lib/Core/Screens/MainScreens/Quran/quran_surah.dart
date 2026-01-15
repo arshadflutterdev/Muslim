@@ -2,17 +2,17 @@
 
 import 'dart:io';
 
-import 'package:Muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Services/audios.dart';
-import 'package:Muslim/Core/Services/rewarded_ad_services.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Services/audios.dart';
+import 'package:muslim/Core/Services/rewarded_ad_services.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
-import 'package:Muslim/Core/Const/apptextstyle.dart';
+import 'package:muslim/Core/Const/apptextstyle.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Data/Models/SahhihMuslim/hadihtdetailmodel.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Data/Models/Sahhihmuslim/hadihtdetailmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -484,7 +484,7 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
                               // English Translation:
                               // ${item.hadithEnglish}
 
-                              // 🌙 Shared via Muslim App – Be Connected with Allah
+                              // 🌙 Shared via muslim App – Be Connected with Allah
                               // """;
                               //                                   await Clipboard.setData(
                               //                                     ClipboardData(text: hadeesText),

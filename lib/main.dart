@@ -1,7 +1,7 @@
-import 'package:Muslim/Core/Const/app_audio.dart';
-import 'package:Muslim/Core/Const/app_images.dart';
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/splashscreen.dart';
+import 'package:muslim/Core/Const/app_audio.dart';
+import 'package:muslim/Core/Const/app_images.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/splashscreen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

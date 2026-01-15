@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Muslim/Core/Const/app_fonts.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/sunan_hadith_details.dart';
-import 'package:Muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/chapters_model.dart';
+import 'package:muslim/Core/Const/app_fonts.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Abu_Dawood/Show_details/sunan_hadith_details.dart';
+import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/chapters_model.dart';
 
-import 'package:Muslim/Core/Services/ad_controller.dart';
-import 'package:Muslim/Core/Widgets/TextFields/customtextfield.dart';
+import 'package:muslim/Core/Services/ad_controller.dart';
+import 'package:muslim/Core/Widgets/TextFields/customtextfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
