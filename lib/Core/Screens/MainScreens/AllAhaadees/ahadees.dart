@@ -225,6 +225,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final orientation = MediaQuery.of(context).orientation;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -293,7 +294,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                 vertical: 4,
                               ),
                               child: SizedBox(
-                                height: height * 0.09,
+                                height: orientation == Orientation.landscape
+                                    ? height * 0.19
+                                    : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -336,10 +339,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                 await downloadService
                                                     .deleteBook(slug);
                                               } else {
-                                                // Queue the download instead of calling downloadBook directly
-                                                // downloadService.downloadBook(
-                                                //   slug,
-                                                // );
                                                 DownloadService.instance
                                                     .downloadBook(
                                                       isUrdu: false,
@@ -374,49 +373,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                                   ),
                                           ),
 
-                                          // IconButton(
-                                          //   onPressed: () async {
-                                          //     if (downloadService.isDownloading(
-                                          //       slug,
-                                          //     ))
-                                          //       return;
-
-                                          //     if (downloadService.isDownloaded(
-                                          //       slug,
-                                          //     )) {
-                                          //       await downloadService
-                                          //           .deleteBook(slug);
-                                          //     } else {
-                                          //       await downloadService
-                                          //           .downloadBook(slug);
-                                          //     }
-                                          //   },
-
-                                          //   icon:
-                                          //       downloadService.isDownloading(
-                                          //         slug,
-                                          //       )
-                                          //       ? const SizedBox(
-                                          //           width: 24,
-                                          //           height: 24,
-                                          //           child:
-                                          //               CircularProgressIndicator(
-                                          //                 color: Colors.green,
-                                          //                 strokeWidth: 2,
-                                          //               ),
-                                          //         )
-                                          //       : downloadService.isDownloaded(
-                                          //           slug,
-                                          //         )
-                                          //       ? const Icon(
-                                          //           Icons.delete,
-                                          //           color: Colors.red,
-                                          //         )
-                                          //       : const Icon(
-                                          //           Icons.download,
-                                          //           color: Colors.black54,
-                                          //         ),
-                                          // ),
                                           Text(
                                             book.chaptersCount ?? "",
                                             style: const TextStyle(
