@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/sahibukhari.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_muslim_chapters.dart';
@@ -310,67 +311,65 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                       width: width * 0.20,
                                       child: Row(
                                         children: [
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "A download is already in progress. Please wait!",
+                                          if (kIsWeb)
+                                            IconButton(
+                                              onPressed: () async {
+                                                // If already downloading, do nothing
+                                                if (downloadService
+                                                    .isDownloading(slug)) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "A download is already in progress. Please wait!",
+                                                      ),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
                                                     ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
+                                                  );
+                                                  return;
+                                                }
 
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                DownloadService.instance
-                                                    .downloadBook(
-                                                      isUrdu: false,
-                                                      context,
-                                                      slug,
-                                                    );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
+                                                // If already downloaded, delete it
+                                                if (downloadService
+                                                    .isDownloaded(slug)) {
+                                                  await downloadService
+                                                      .deleteBook(slug);
+                                                } else {
+                                                  DownloadService.instance
+                                                      .downloadBook(
+                                                        isUrdu: false,
+                                                        context,
+                                                        slug,
+                                                      );
+                                                }
+                                              },
+                                              icon:
+                                                  downloadService.isDownloading(
                                                     slug,
                                                   )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
+                                                  ? const SizedBox(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                            color: Colors.green,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                    )
+                                                  : downloadService
+                                                        .isDownloaded(slug)
+                                                  ? const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.red,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.download,
+                                                      color: Colors.black54,
+                                                    ),
+                                            ),
 
                                           Text(
                                             book.chaptersCount ?? "",
