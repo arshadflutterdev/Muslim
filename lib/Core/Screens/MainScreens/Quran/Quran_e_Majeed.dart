@@ -402,11 +402,10 @@
 //     );
 //   }
 // }
-import 'dart:async';
 
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:muslim/Core/Screens/MainScreens/Quran/favscreen.dart';
 import 'package:muslim/Core/Screens/MainScreens/Quran/quran_surah.dart';
 import 'package:muslim/Core/Widgets/Buttons/iconbutton.dart';
@@ -688,7 +687,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                       vertical: 6,
                     ),
                     child: Container(
-                      height: height * 0.095,
+                      height: height * 0.05,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
