@@ -295,7 +295,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               ),
                               child: SizedBox(
                                 height: orientation == Orientation.landscape
-                                    ? 70
+                                    ? 65
                                     : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
@@ -415,7 +415,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               ),
                               child: SizedBox(
                                 height: orientation == Orientation.landscape
-                                    ? 70
+                                    ? 65
                                     : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
@@ -448,71 +448,69 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Gap(10),
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                          if (!kIsWeb)
+                                            IconButton(
+                                              onPressed: () async {
+                                                // If already downloading, do nothing
+                                                if (downloadService
+                                                    .isDownloading(slug)) {
+                                                  ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                                      ),
+                                                      duration: Duration(
+                                                        seconds: 2,
+                                                      ),
                                                     ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
+                                                  );
+                                                  return;
+                                                }
 
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                // Queue the download instead of calling downloadBook directly
-                                                // downloadService.downloadBook(
-                                                //   slug,
-                                                // );
-                                                DownloadService.instance
-                                                    .downloadBook(
-                                                      isUrdu: true,
-                                                      context,
-                                                      slug,
-                                                    );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
+                                                // If already downloaded, delete it
+                                                if (downloadService
+                                                    .isDownloaded(slug)) {
+                                                  await downloadService
+                                                      .deleteBook(slug);
+                                                } else {
+                                                  // Queue the download instead of calling downloadBook directly
+                                                  // downloadService.downloadBook(
+                                                  //   slug,
+                                                  // );
+                                                  DownloadService.instance
+                                                      .downloadBook(
+                                                        isUrdu: true,
+                                                        context,
+                                                        slug,
+                                                      );
+                                                }
+                                              },
+                                              icon:
+                                                  downloadService.isDownloading(
                                                     slug,
                                                   )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
+                                                  ? const SizedBox(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                            color: Colors.green,
+                                                            strokeWidth: 2,
+                                                          ),
+                                                    )
+                                                  : downloadService
+                                                        .isDownloaded(slug)
+                                                  ? const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.red,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.download,
+                                                      color: Colors.black54,
+                                                    ),
+                                            ),
 
                                           // IconButton(
                                           //   onPressed: () async {
