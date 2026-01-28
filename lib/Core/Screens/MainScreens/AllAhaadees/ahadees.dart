@@ -1,10 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io';
-import 'package:muslim/Core/Screens/CodeToDownloadBooks/download_jami-al-tirmidhi.dart';
-import 'package:muslim/Core/Screens/CodeToDownloadBooks/download_sahi-muslim.dart';
-import 'package:muslim/Core/Screens/CodeToDownloadBooks/download_sunan_abu_dawood.dart';
-import 'package:muslim/Core/Screens/CodeToDownloadBooks/download_sunan_annasai.dart';
-import 'package:muslim/Core/Screens/CodeToDownloadBooks/download_sunan_ibn_majah.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/sahibukhari.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahihMuslim/sahih_muslim_chapters.dart';
@@ -297,7 +294,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               ),
                               child: SizedBox(
                                 height: orientation == Orientation.landscape
-                                    ? height * 0.19
+                                    ? height * 0.30
                                     : height * 0.09,
                                 child: Card(
                                   color: Colors.white,
