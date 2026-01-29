@@ -124,16 +124,19 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
   void handleBookTap({required String slug, required bool isUrdu}) async {
     final dir = await getApplicationDocumentsDirectory();
     final file = File("${dir.path}/$slug.json");
-
-    if (!file.existsSync()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            isUrdu ? "پہلے حدیث ڈاؤن لوڈ کریں" : "Please download hadith first",
+    if (!kIsWeb) {
+      if (!file.existsSync()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isUrdu
+                  ? "پہلے حدیث ڈاؤن لوڈ کریں"
+                  : "Please download hadith first",
+            ),
           ),
-        ),
-      );
-      return;
+        );
+        return;
+      }
     }
 
     if (!isUrdu) {
