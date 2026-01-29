@@ -176,7 +176,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
       });
       return false;
     }
-    return false;
+    return true;
   }
 
   @override
@@ -269,7 +269,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
 
         body: kIsWeb
             ? GridView.builder(
-                itemCount: surahNames.length,
+                itemCount: searchSurrah.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 5,
@@ -297,14 +297,17 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                         ],
                       ),
                       child: InkWell(
+                        canRequestFocus: false,
                         borderRadius: BorderRadius.circular(16),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => QuranSurah(searchSurrah[index]),
-                            ),
-                          );
+                          Future.microtask(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => QuranSurah(searchSurrah[index]),
+                              ),
+                            );
+                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -387,12 +390,14 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => QuranSurah(searchSurrah[index]),
-                            ),
-                          );
+                          Future.microtask(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => QuranSurah(searchSurrah[index]),
+                              ),
+                            );
+                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
