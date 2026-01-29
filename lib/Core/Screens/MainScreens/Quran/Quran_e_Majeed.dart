@@ -176,7 +176,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
       });
       return false;
     }
-    return true;
+    return false;
   }
 
   @override
