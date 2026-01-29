@@ -282,243 +282,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                       ? const Center(child: Text("No Internet Connection"))
                       : booksList.isEmpty
                       ? const Center(child: Text("No Hadith books found"))
-                      : (kIsWeb)
-                      ? GridView.builder(
-                          itemCount: booksList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 7,
-                                crossAxisCount: 2,
-                              ),
-                          itemBuilder: (context, index) {
-                            final book = booksList[index];
-                            final slug = book.bookSlug ?? "";
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              child: SizedBox(
-                                height: orientation == Orientation.landscape
-                                    ? 65
-                                    : height * 0.09,
-                                child: Card(
-                                  color: Colors.white,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: ListTile(
-                                    onTap: () {
-                                      handleBookTap(slug: slug, isUrdu: false);
-                                    },
-                                    trailing: SizedBox(
-                                      width: width * 0.20,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            book.chaptersCount ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
-
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "A download is already in progress. Please wait!",
-                                                    ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
-
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                DownloadService.instance
-                                                    .downloadBook(
-                                                      isUrdu: false,
-                                                      context,
-                                                      slug,
-                                                    );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
-                                                    slug,
-                                                  )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    title: Text(
-                                      book.bookName ?? "",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: namecolors[index],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      : (kIsWeb)
-                      ? GridView.builder(
-                          itemCount: booksList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                              ),
-                          itemBuilder: (context, index) {
-                            final book = booksList[index];
-                            final slug = book.bookSlug ?? "";
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              child: SizedBox(
-                                height: orientation == Orientation.landscape
-                                    ? 65
-                                    : height * 0.09,
-                                child: Card(
-                                  color: Colors.white,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: ListTile(
-                                    onTap: () {
-                                      handleBookTap(slug: slug, isUrdu: false);
-                                    },
-                                    trailing: SizedBox(
-                                      width: width * 0.20,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            book.chaptersCount ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
-
-                                          IconButton(
-                                            onPressed: () async {
-                                              // If already downloading, do nothing
-                                              if (downloadService.isDownloading(
-                                                slug,
-                                              )) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "A download is already in progress. Please wait!",
-                                                    ),
-                                                    duration: Duration(
-                                                      seconds: 2,
-                                                    ),
-                                                  ),
-                                                );
-                                                return;
-                                              }
-
-                                              // If already downloaded, delete it
-                                              if (downloadService.isDownloaded(
-                                                slug,
-                                              )) {
-                                                await downloadService
-                                                    .deleteBook(slug);
-                                              } else {
-                                                DownloadService.instance
-                                                    .downloadBook(
-                                                      isUrdu: false,
-                                                      context,
-                                                      slug,
-                                                    );
-                                              }
-                                            },
-                                            icon:
-                                                downloadService.isDownloading(
-                                                  slug,
-                                                )
-                                                ? const SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.green,
-                                                          strokeWidth: 2,
-                                                        ),
-                                                  )
-                                                : downloadService.isDownloaded(
-                                                    slug,
-                                                  )
-                                                ? const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.download,
-                                                    color: Colors.black54,
-                                                  ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    title: Text(
-                                      book.bookName ?? "",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: namecolors[index],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        )
                       : ListView.builder(
                           itemCount: booksList.length,
                           itemBuilder: (context, index) {
@@ -641,6 +404,50 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                       ? const Center(child: Text("No Internet Connection"))
                       : booksList.isEmpty
                       ? const Center(child: Text("No Hadith books found"))
+                      : (kIsWeb)
+                      ? GridView.builder(
+                          itemCount: booksList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 6,
+                              ),
+                          itemBuilder: (context, index) {
+                            final book = booksList[index];
+                            final slug = book.bookSlug ?? "";
+                            return Card(
+                              color: Colors.white,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  handleBookTap(slug: slug, isUrdu: true);
+                                },
+                                trailing: FittedBox(
+                                  child: Center(
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      urduBookNames[slug] ??
+                                          book.bookName ??
+                                          "",
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: height * 0.040,
+                                        color: namecolors[index],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                title: Text(
+                                  book.chaptersCount ?? "",
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            );
+                          },
+                        )
                       : ListView.builder(
                           itemCount: booksList.length,
                           itemBuilder: (context, index) {
@@ -687,69 +494,72 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Gap(10),
-                                          if (!kIsWeb)
-                                            IconButton(
-                                              onPressed: () async {
-                                                // If already downloading, do nothing
-                                                if (downloadService
-                                                    .isDownloading(slug)) {
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
-                                                      ),
-                                                      duration: Duration(
-                                                        seconds: 2,
-                                                      ),
-                                                    ),
-                                                  );
-                                                  return;
-                                                }
 
-                                                // If already downloaded, delete it
-                                                if (downloadService
-                                                    .isDownloaded(slug)) {
-                                                  await downloadService
-                                                      .deleteBook(slug);
-                                                } else {
-                                                  // Queue the download instead of calling downloadBook directly
-                                                  // downloadService.downloadBook(
-                                                  //   slug,
-                                                  // );
-                                                  DownloadService.instance
-                                                      .downloadBook(
-                                                        isUrdu: true,
-                                                        context,
-                                                        slug,
-                                                      );
-                                                }
-                                              },
-                                              icon:
-                                                  downloadService.isDownloading(
+                                          IconButton(
+                                            onPressed: () async {
+                                              // If already downloading, do nothing
+                                              if (downloadService.isDownloading(
+                                                slug,
+                                              )) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      "ایک ڈاؤن لوڈ پہلے سے جاری ہے، براہ کرم انتظار کریں!",
+                                                    ),
+                                                    duration: Duration(
+                                                      seconds: 2,
+                                                    ),
+                                                  ),
+                                                );
+                                                return;
+                                              }
+
+                                              // If already downloaded, delete it
+                                              if (downloadService.isDownloaded(
+                                                slug,
+                                              )) {
+                                                await downloadService
+                                                    .deleteBook(slug);
+                                              } else {
+                                                // Queue the download instead of calling downloadBook directly
+                                                // downloadService.downloadBook(
+                                                //   slug,
+                                                // );
+                                                DownloadService.instance
+                                                    .downloadBook(
+                                                      isUrdu: true,
+                                                      context,
+                                                      slug,
+                                                    );
+                                              }
+                                            },
+                                            icon:
+                                                downloadService.isDownloading(
+                                                  slug,
+                                                )
+                                                ? const SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                          color: Colors.green,
+                                                          strokeWidth: 2,
+                                                        ),
+                                                  )
+                                                : downloadService.isDownloaded(
                                                     slug,
                                                   )
-                                                  ? const SizedBox(
-                                                      width: 24,
-                                                      height: 24,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                            color: Colors.green,
-                                                            strokeWidth: 2,
-                                                          ),
-                                                    )
-                                                  : downloadService
-                                                        .isDownloaded(slug)
-                                                  ? const Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red,
-                                                    )
-                                                  : const Icon(
-                                                      Icons.download,
-                                                      color: Colors.black54,
-                                                    ),
-                                            ),
+                                                ? const Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  )
+                                                : const Icon(
+                                                    Icons.download,
+                                                    color: Colors.black54,
+                                                  ),
+                                          ),
 
                                           // IconButton(
                                           //   onPressed: () async {
