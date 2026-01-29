@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_chapter_details.dart';
@@ -121,11 +122,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     }
   }
 
+  // 1. Update the handleBookTap to be web-safe
   void handleBookTap({required String slug, required bool isUrdu}) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File("${dir.path}/$slug.json");
+    // Only check local files if NOT on Web
     if (!kIsWeb) {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File("${dir.path}/$slug.json");
       if (!file.existsSync()) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -139,69 +143,145 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
       }
     }
 
+    if (!mounted) return;
+
+    // Define the target Screen
+    Widget targetScreen;
+
     if (!isUrdu) {
-      if (slug == "sahih-bukhari") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => Bukhari(title: '')),
-        );
-      } else if (slug == "sahih-muslim") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SahihMuslimChaptersss()),
-        );
-      } else if (slug == "al-tirmidhi") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => TirmidhiChapterDetails()),
-        );
-      } else if (slug == "abu-dawood") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SunanChapterDetails()),
-        );
-      } else if (slug == "ibn-e-majah") {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => IbneMajah()));
-      } else if (slug == "sunan-nasai") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SunanChaptersss()),
-        );
+      switch (slug) {
+        case "sahih-bukhari":
+          targetScreen = const Bukhari(title: '');
+          break;
+        case "sahih-muslim":
+          targetScreen = const SahihMuslimChaptersss();
+          break;
+        case "al-tirmidhi":
+          targetScreen = const TirmidhiChapterDetails();
+          break;
+        case "abu-dawood":
+          targetScreen = const SunanChapterDetails();
+          break;
+        case "ibn-e-majah":
+          targetScreen = const IbneMajah();
+          break;
+        case "sunan-nasai":
+          targetScreen = const SunanChaptersss();
+          break;
+        default:
+          return;
       }
     } else {
-      if (slug == "sahih-bukhari") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => BukhariUrdu(title: '')),
-        );
-      } else if (slug == "sahih-muslim") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SahihMuslimChaptersssUrdu()),
-        );
-      } else if (slug == "al-tirmidhi") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => TirmidhiChapterDetailsUrdu()),
-        );
-      } else if (slug == "abu-dawood") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SunanChapterDetailsUrdu()),
-        );
-      } else if (slug == "ibn-e-majah") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => IbneMajahUrdu()),
-        );
-      } else if (slug == "sunan-nasai") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SunanChaptersssUrdu()),
-        );
+      switch (slug) {
+        case "sahih-bukhari":
+          targetScreen = const BukhariUrdu(title: '');
+          break;
+        case "sahih-muslim":
+          targetScreen = const SahihMuslimChaptersssUrdu();
+          break;
+        case "al-tirmidhi":
+          targetScreen = const TirmidhiChapterDetailsUrdu();
+          break;
+        case "abu-dawood":
+          targetScreen = const SunanChapterDetailsUrdu();
+          break;
+        case "ibn-e-majah":
+          targetScreen = const IbneMajahUrdu();
+          break;
+        case "sunan-nasai":
+          targetScreen = const SunanChaptersssUrdu();
+          break;
+        default:
+          return;
       }
     }
+
+    // Use a cleaner navigation call
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => targetScreen));
   }
+  // void handleBookTap({required String slug, required bool isUrdu}) async {
+  //   final dir = await getApplicationDocumentsDirectory();
+  //   final file = File("${dir.path}/$slug.json");
+  //   if (!kIsWeb) {
+  //     if (!file.existsSync()) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(
+  //             isUrdu
+  //                 ? "پہلے حدیث ڈاؤن لوڈ کریں"
+  //                 : "Please download hadith first",
+  //           ),
+  //         ),
+  //       );
+  //       return;
+  //     }
+  //   }
+
+  //   if (!isUrdu) {
+  //     if (slug == "sahih-bukhari") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => Bukhari(title: '')),
+  //       );
+  //     } else if (slug == "sahih-muslim") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SahihMuslimChaptersss()),
+  //       );
+  //     } else if (slug == "al-tirmidhi") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => TirmidhiChapterDetails()),
+  //       );
+  //     } else if (slug == "abu-dawood") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SunanChapterDetails()),
+  //       );
+  //     } else if (slug == "ibn-e-majah") {
+  //       Navigator.push(context, MaterialPageRoute(builder: (_) => IbneMajah()));
+  //     } else if (slug == "sunan-nasai") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SunanChaptersss()),
+  //       );
+  //     }
+  //   } else {
+  //     if (slug == "sahih-bukhari") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => BukhariUrdu(title: '')),
+  //       );
+  //     } else if (slug == "sahih-muslim") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SahihMuslimChaptersssUrdu()),
+  //       );
+  //     } else if (slug == "al-tirmidhi") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => TirmidhiChapterDetailsUrdu()),
+  //       );
+  //     } else if (slug == "abu-dawood") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SunanChapterDetailsUrdu()),
+  //       );
+  //     } else if (slug == "ibn-e-majah") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => IbneMajahUrdu()),
+  //       );
+  //     } else if (slug == "sunan-nasai") {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (_) => SunanChaptersssUrdu()),
+  //       );
+  //     }
+  //   }
+  // }
 
   List<Color> namecolors = [
     Color(0xFF0046FF),
