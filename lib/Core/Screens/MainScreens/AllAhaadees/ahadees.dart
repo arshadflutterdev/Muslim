@@ -44,6 +44,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
     downloadService.addListener(_refreshUI);
+
     loadBooks();
   }
 
