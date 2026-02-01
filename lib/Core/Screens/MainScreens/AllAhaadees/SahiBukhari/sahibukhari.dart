@@ -571,7 +571,8 @@ class _BukhariState extends State<Bukhari> {
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print("Your apis are good");
+        final jsondecode = jsonDecode(response.body);
+        print("here is json decode $jsondecode");
       }
     } catch (e) {
       e.toString();
