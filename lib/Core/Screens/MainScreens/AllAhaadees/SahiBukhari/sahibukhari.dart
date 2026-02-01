@@ -561,11 +561,13 @@ class _BukhariState extends State<Bukhari> {
   ];
   //below data and everything related website
   //chapter fetch from apis
-  Future<void> bukhariChapters() async {
+  Future<void> getBukhariChapters() async {
+    final apiKey =
+        "\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    final url =
+        "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$apiKey";
     try {
-      final response = await http.get(
-        Uri.parse("https://hadithapi.com/api/sahih-bukhari/chapters?apiKey="),
-      );
+      final response = await http.get(Uri.parse(""));
     } catch (e) {
       e.toString();
     }
