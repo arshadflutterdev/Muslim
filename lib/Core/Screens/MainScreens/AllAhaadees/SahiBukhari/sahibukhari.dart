@@ -567,7 +567,10 @@ class _BukhariState extends State<Bukhari> {
     final url =
         "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$apiKey";
     try {
-      final response = await http.get(Uri.parse(""));
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print("Your apis are good");
+      }
     } catch (e) {
       e.toString();
     }
@@ -577,6 +580,7 @@ class _BukhariState extends State<Bukhari> {
   void initState() {
     super.initState();
     loadofflinechapters();
+    getBukhariChapters();
   }
 
   @override
