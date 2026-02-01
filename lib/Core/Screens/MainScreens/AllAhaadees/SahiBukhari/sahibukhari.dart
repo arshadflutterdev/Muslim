@@ -167,11 +167,10 @@ class _BukhariState extends State<Bukhari> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsondecode = jsonDecode(response.body);
         final bukhariData = Sahimuslimchapterlist.fromJson(jsondecode);
-        setState(() {
-          chaptersList = bukhariData.chapters ?? [];
+        chaptersList = bukhariData.chapters ?? [];
 
-          print("here is total lentght of cheapters ${chaptersList.length}");
-        });
+        print("here is total lentght of cheapters ${chaptersList.length}");
+
         return chaptersList;
       } else {
         throw Exception("faild to load data");
