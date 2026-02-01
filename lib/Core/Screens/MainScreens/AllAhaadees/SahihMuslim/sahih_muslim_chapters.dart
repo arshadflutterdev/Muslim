@@ -166,7 +166,9 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
                 future: muslimChapterList(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(color: Colors.green);
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
                   } else if (!snapshot.hasData) {
                     return Center(child: Text("No data found"));
                   } else if (snapshot.hasError) {
