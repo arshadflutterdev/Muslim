@@ -561,6 +561,7 @@ class _BukhariState extends State<Bukhari> {
   ];
 
   Future<void> getBukhariChapters() async {
+    isLoading = true;
     final apiKey =
         "\$2y\$10\$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
     final url =
@@ -572,7 +573,7 @@ class _BukhariState extends State<Bukhari> {
         final bukhariData = Sahimuslimchapterlist.fromJson(jsondecode);
         setState(() {
           chaptersList = bukhariData.chapters ?? [];
-
+          isLoading = false;
           print("here is total lentght of cheapters ${chaptersList.length}");
         });
       }
@@ -617,9 +618,7 @@ class _BukhariState extends State<Bukhari> {
           backgroundColor: Colors.white,
         ),
         body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(color: Colors.green),
-              )
+            ? const Center(child: CircularProgressIndicator(color: Colors.red))
             : kIsWeb
             ? FutureBuilder(
                 future: getBukhariChapters(),
