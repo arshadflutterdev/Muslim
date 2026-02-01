@@ -5,6 +5,7 @@ import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmusli
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class SahihMuslimChaptersss extends StatefulWidget {
   const SahihMuslimChaptersss({super.key});
@@ -45,6 +46,24 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
     } catch (e) {
       hasError = true;
       isLoading = false;
+    }
+  }
+
+  //here is data for website
+  Future muslimChapterList() async {
+    final muslimapis =
+        r"https://hadithapi.com/api/sahih-muslim/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(muslimapis));
+      if (response.statusCode == 200) {
+        final jsondecode = jsonDecode(response.body);
+        print('yOUR APIS ARE GOOD');
+        final muslimdata = Sahimuslimchapterlist.fromJson(jsondecode);
+        chaptersList = muslimdata.chapters ?? [];
+        print("here is chapter list $chaptersList");
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -112,6 +131,7 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
   void initState() {
     super.initState();
     loadofflinechapters();
+    muslimChapterList();
   }
 
   @override
