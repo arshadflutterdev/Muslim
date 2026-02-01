@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/Models/sunananasai_chapter_model.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SunanAnNasai/ShowDetails/sunananasai_hadith_details.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class SunanChaptersss extends StatefulWidget {
   const SunanChaptersss({super.key});
@@ -45,6 +47,21 @@ class _SunanChaptersssState extends State<SunanChaptersss> {
         hasError = true;
       });
       print("error related ${e.toString()}");
+    }
+  }
+
+  //get chapters for web
+  Future sunanChapters() async {
+    final apiKyes =
+        r"https://hadithapi.com/api/sunan-nasai/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(apiKyes));
+      final jsondecod = jsonDecode(response.body);
+      final sunanData = SunanAnNasaiChapterModel.fromJson(jsondecod);
+      chapterList = sunanData.chapters ?? [];
+      return chapterList;
+    } catch (e) {
+      e.toString();
     }
   }
 
@@ -126,7 +143,51 @@ class _SunanChaptersssState extends State<SunanChaptersss> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: sunanChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return ListView.builder(
+                    itemCount: chapterList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chapterList[index];
+                      final hadithlength = nasaiHadithRanges[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SunananasaiHadithDetails(
+                                  chapterno: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontFamily: AppFonts.arabicfont,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
