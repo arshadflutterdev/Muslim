@@ -403,6 +403,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
@@ -593,7 +594,9 @@ class _BukhariState extends State<Bukhari> {
           centerTitle: true,
           backgroundColor: Colors.white,
         ),
-        body: isLoading
+        body: kIsWeb
+            ? Center(child: Text("now on web"))
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
