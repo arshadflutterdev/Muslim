@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahimuslimdetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
@@ -57,11 +59,13 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
       final response = await http.get(Uri.parse(muslimapis));
       if (response.statusCode == 200) {
         final jsondecode = jsonDecode(response.body);
-        print('yOUR APIS ARE GOOD');
+        print('yOUR APIS ARE GOOD $jsondecode');
+
         final muslimdata = Sahimuslimchapterlist.fromJson(jsondecode);
         chaptersList = muslimdata.chapters ?? [];
-        print("here is chapter list $chaptersList");
+        print("here is chapter list ${chaptersList.length}");
       }
+      return chaptersList;
     } catch (e) {
       print(e.toString());
     }
@@ -157,7 +161,54 @@ class _SahihMuslimChaptersssState extends State<SahihMuslimChaptersss> {
           backgroundColor: Colors.white,
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: muslimChapterList(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(color: Colors.green);
+                  } else if (!snapshot.hasData) {
+                    return Center(child: Text("No data found"));
+                  } else if (snapshot.hasError) {
+                    Center(child: Text("We found an Error we working on it"));
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chaptersList[index];
+                      final hadithlength = sahihMuslimHadithRanges[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Sahimuslimdetails(
+                                  ChapterIds: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(
+                            chapter.chapterEnglish ?? "No name",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          trailing: Text(
+                            hadithlength,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
