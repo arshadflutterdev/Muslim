@@ -572,7 +572,7 @@ class _BukhariState extends State<Bukhari> {
         final bukhariData = Sahimuslimchapterlist.fromJson(jsondecode);
         setState(() {
           chaptersList = bukhariData.chapters ?? [];
-          isLoading = false;
+
           print("here is total lentght of cheapters ${chaptersList.length}");
         });
       }
@@ -585,7 +585,6 @@ class _BukhariState extends State<Bukhari> {
   void initState() {
     super.initState();
     loadofflinechapters();
-    getBukhariChapters();
   }
 
   @override
@@ -617,7 +616,11 @@ class _BukhariState extends State<Bukhari> {
           centerTitle: true,
           backgroundColor: Colors.white,
         ),
-        body: kIsWeb
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: Colors.green),
+              )
+            : kIsWeb
             ? FutureBuilder(
                 future: getBukhariChapters(),
                 builder: (context, snapshot) {
@@ -669,10 +672,6 @@ class _BukhariState extends State<Bukhari> {
                     );
                   }
                 },
-              )
-            : isLoading
-            ? const Center(
-                child: CircularProgressIndicator(color: Colors.green),
               )
             : hasError
             ? const Center(child: Text("Error loading chapters"))
