@@ -410,6 +410,7 @@ import 'package:flutter/material.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/SahiBukhari/hadithDetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahmuslim_chapters_model.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class Bukhari extends StatefulWidget {
   final String title;
@@ -558,6 +559,17 @@ class _BukhariState extends State<Bukhari> {
     "7268-7370",
     "7371-7563",
   ];
+  //below data and everything related website
+  //chapter fetch from apis
+  Future<void> bukhariChapters() async {
+    try {
+      final response = await http.get(
+        Uri.parse("https://hadithapi.com/api/sahih-bukhari/chapters?apiKey="),
+      );
+    } catch (e) {
+      e.toString();
+    }
+  }
 
   @override
   void initState() {
