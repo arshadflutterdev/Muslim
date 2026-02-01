@@ -560,6 +560,8 @@ class _BukhariState extends State<Bukhari> {
     "7371-7563",
   ];
   //below data and everything related website
+  //below list of chapters
+  List<String> bukhariChapterList = [];
   //chapter fetch from apis
   Future<void> getBukhariChapters() async {
     final apiKey =
