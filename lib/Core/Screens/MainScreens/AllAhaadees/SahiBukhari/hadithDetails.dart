@@ -112,8 +112,9 @@ class _HadithdetailsState extends State<Hadithdetails> {
 
   //lets get hadiths from api for web
   Future getHadiths() async {
+    print("Attempting to call API...");
     final String apiUrl =
-        r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+        r"https://cors-anywhere.herokuapp.com/https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
