@@ -56,10 +56,31 @@ class _SahihMuslimChaptersssUrduState extends State<SahihMuslimChaptersssUrdu> {
     }
   }
 
+  //let's get data for web
+  Future muslimChapterList() async {
+    final muslimapis =
+        r"https://hadithapi.com/api/sahih-muslim/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(muslimapis));
+      if (response.statusCode == 200) {
+        final jsondecode = jsonDecode(response.body);
+        print('yOUR APIS ARE GOOD $jsondecode');
+
+        final muslimdata = Sahimuslimchapterlist.fromJson(jsondecode);
+        chaptersList = muslimdata.chapters ?? [];
+        print("here is chapter list ${chaptersList.length}");
+      }
+      return chaptersList;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     loadofflinechapters();
+    muslimChapterList();
   }
 
   //hadiths in chapters
