@@ -10,6 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class Hadithdetails extends StatefulWidget {
   final String? ChapterId;
@@ -111,7 +112,12 @@ class _HadithdetailsState extends State<Hadithdetails> {
   Future getHadiths() async {
     final apiKey =
         r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
-    try {} catch (e) {
+    try {
+      final response = await http.get(Uri.parse(apiKey));
+      if (response.statusCode == 200) {
+        print("Congratulations your apis are working");
+      }
+    } catch (e) {
       e.toString();
     }
   }
@@ -120,6 +126,7 @@ class _HadithdetailsState extends State<Hadithdetails> {
   void initState() {
     super.initState();
     getdownloadhadith();
+    getHadiths();
   }
 
   //here is bottom sheet for copy
