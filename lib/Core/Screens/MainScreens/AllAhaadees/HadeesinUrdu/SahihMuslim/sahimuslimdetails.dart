@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Data/Models/Sahhihmuslim/hadihtdetailmodel.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,11 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
   @override
   void initState() {
     super.initState();
-    loadHadithData();
+    if (kIsWeb) {
+      getHadiths();
+    } else {
+      loadHadithData();
+    }
   }
 
   Future<void> loadHadithData() async {
@@ -75,6 +80,39 @@ class _SahimuslimdetailsUrduState extends State<SahimuslimdetailsUrdu> {
           isLoading = false;
         });
       }
+    }
+  }
+
+  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/muslim-hadiths";
+
+  Future<void> getHadiths() async {
+    setState(() => isLoading = true);
+
+    // 2. URL mein Chapter ID add karein taake wahi data aaye jo chahiye
+    final String finalUrl = "$apiUrl?chapter=${widget.ChapterIds}";
+    try {
+      print("Fetching from: $finalUrl");
+      final response = await http.get(Uri.parse(finalUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decodedData = jsonDecode(response.body);
+
+        // API response mein 'hadiths' ke andar 'data' hota hai
+        if (decodedData['hadiths'] != null &&
+            decodedData['hadiths']['data'] != null) {
+          final List<dynamic> fetchedList = decodedData['hadiths']['data'];
+
+          setState(() {
+            // Ab filter lagane ki zaroorat nahi, API khud filter karke degi
+            hadithList = fetchedList.map((h) => Data.fromJson(h)).toList();
+            isLoading = false;
+          });
+          print("Data Loaded: ${hadithList.length} hadiths");
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      setState(() => isLoading = false);
     }
   }
 
