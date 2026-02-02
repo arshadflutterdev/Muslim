@@ -139,7 +139,114 @@ class _SunanChapterDetailsUrduState extends State<SunanChapterDetailsUrdu> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: abuDawoodChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: chapterList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chapterList[index];
+                      final hadithlength = abuDawoodHadithRanges[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SunanHadithDetailsUrdu(
+                                  chapterno: chapter.chapterNumber ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            // height: 80,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+
+                                children: [
+                                  Text(
+                                    hadithlength,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.arabicfont,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Text(
+                                      maxLines: 3, // 🔴 important
+                                      overflow:
+                                          TextOverflow.ellipsis, // 🔴 important
+                                      textAlign:
+                                          TextAlign.right, // Urdu ke liye
+                                      chapter.chapterUrdu ?? '',
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //  ListTile(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => SunanHadithDetailsUrdu(
+                        //           chapterno: chapter.chapterNumber ?? '',
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   title: Text(
+                        //     chapter.chapterUrdu ?? "No name",
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.urdufont,
+                        //       fontSize: 20,
+                        //       height: 2,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     hadithlength,
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.arabicfont,
+                        //       fontSize: 16,
+                        //       color: Colors.black87,
+                        //     ),
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
