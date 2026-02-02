@@ -75,7 +75,7 @@ class _BukhariUrduState extends State<BukhariUrdu> {
   @override
   void initState() {
     super.initState();
-    // loadofflinechapters();
+    loadofflinechapters();
     bukhariChapters();
     // loadChapters();
   }
