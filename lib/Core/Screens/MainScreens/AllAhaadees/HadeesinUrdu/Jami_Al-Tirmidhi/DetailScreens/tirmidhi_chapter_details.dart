@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Jami_Al-Tirmidhi/DetailScreens/tirmidhi_details.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Jami_Al-Tirmidhi/Models/chapter_model.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class TirmidhiChapterDetailsUrdu extends StatefulWidget {
   const TirmidhiChapterDetailsUrdu({super.key});
@@ -51,6 +53,23 @@ class _TirmidhiChapterDetailsUrduState
         isLoading = false;
         hasError = true;
       });
+    }
+  }
+
+  Future getTirmidhichapters() async {
+    final tirmidhiApis =
+        r"https://hadithapi.com/api/al-tirmidhi/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(tirmidhiApis));
+      if (response.statusCode == 200) {
+        print("Your apis are working correctly");
+        final jsondecode = jsonDecode(response.body);
+        final tirmidhiData = TirmidhiModel.fromJson(jsondecode);
+        chaptersList = tirmidhiData.chapters ?? [];
+      }
+      return chaptersList;
+    } catch (e) {
+      e.toString();
     }
   }
 
@@ -112,6 +131,7 @@ class _TirmidhiChapterDetailsUrduState
   void initState() {
     super.initState();
     getdownloadedchapters();
+    getTirmidhichapters();
   }
 
   @override
@@ -130,7 +150,115 @@ class _TirmidhiChapterDetailsUrduState
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: getTirmidhichapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chaptersList[index];
+                      final hadithlength = tirmidhiHadithRanges[index];
+
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TirmidhiDetailsUrdu(
+                                  chapterId: chapter.chapterNumber ?? '',
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            // height: 80,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+
+                                children: [
+                                  Text(
+                                    hadithlength,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.arabicfont,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Text(
+                                      maxLines: 3, // 🔴 important
+                                      overflow:
+                                          TextOverflow.ellipsis, // 🔴 important
+                                      textAlign:
+                                          TextAlign.right, // Urdu ke liye
+                                      chapter.chapterUrdu ?? '',
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // ListTile(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => TirmidhiDetailsUrdu(
+                        //           chapterId: chapter.chapterNumber ?? '',
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   title: Text(
+                        //     chapter.chapterUrdu ?? "No name",
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.urdufont,
+                        //       fontSize: 20,
+                        //       height: 2.2,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     hadithlength,
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.arabicfont,
+                        //       fontSize: 16,
+                        //       color: Colors.black87,
+                        //     ),
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
