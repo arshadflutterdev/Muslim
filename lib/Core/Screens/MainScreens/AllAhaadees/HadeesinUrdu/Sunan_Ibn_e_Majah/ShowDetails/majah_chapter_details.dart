@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sunan_Ibn_e_Majah/ShowDetails/majah_detailed.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
@@ -52,10 +53,28 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
     }
   }
 
+  Future getMajahChapters() async {
+    final apiKey =
+        r"https://hadithapi.com/api/ibn-e-majah/chapters?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {
+      final response = await http.get(Uri.parse(apiKey));
+      if (response.statusCode == 200) {
+        final jsondecod = jsonDecode(response.body);
+        print(jsondecod);
+        final majahData = MajahChapterModel.fromJson(jsondecod);
+        chaptersList = majahData.chapters ?? [];
+      }
+      return chaptersList;
+    } catch (e) {
+      e.toString();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getDownloadChapters();
+    getMajahChapters();
   }
 
   List<String> ibnMajahHadithRanges = [
@@ -126,114 +145,225 @@ class _IbneMajahUrduState extends State<IbneMajahUrdu> {
           ),
         ),
         backgroundColor: isLoading ? Colors.white : Colors.white,
-        body: Builder(
-          builder: (context) {
-            if (isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.green),
-              );
-            } else if (hasError) {
-              return const Center(child: Text("No Internet Connection ❌"));
-            } else if (chaptersList.isEmpty) {
-              return const Center(child: Text("No chapters found"));
-            }
-
-            return ListView.builder(
-              itemCount: chaptersList.length,
-              itemBuilder: (context, index) {
-                final hadithlength = ibnMajahHadithRanges[index];
-                final chapter = chaptersList[index];
-                return Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MajahDetailedUrdu(
-                            chapterIdss: chapter.chapterNumber,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      // height: 80,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
+        body: kIsWeb
+            ? FutureBuilder(
+                future: getMajahChapters(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final hadithlength = ibnMajahHadithRanges[index];
+                      final chapter = chaptersList[index];
+                      return Card(
+                        elevation: 3,
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 12,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-
-                          children: [
-                            Text(
-                              hadithlength,
-                              style: TextStyle(
-                                fontFamily: AppFonts.arabicfont,
-                                fontSize: 16,
-                              ),
-                            ),
-
-                            Expanded(
-                              child: Text(
-                                maxLines: 3, // 🔴 important
-                                overflow: TextOverflow.ellipsis, // 🔴 important
-                                textAlign: TextAlign.right, // Urdu ke liye
-                                chapter.chapterUrdu ?? '',
-                                style: TextStyle(
-                                  fontFamily: AppFonts.urdufont,
-                                  fontSize: 22,
-                                  color: Colors.black,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MajahDetailedUrdu(
+                                  chapterIdss: chapter.chapterNumber,
                                 ),
                               ),
+                            );
+                          },
+                          child: Container(
+                            // height: 80,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
 
-                  // ListTile(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => MajahDetailedUrdu(
-                  //           chapterIdss: chapter.chapterNumber,
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  //   title: Text(
-                  //     chapter.chapterUrdu ?? "No name",
-                  //     style: TextStyle(
-                  //       fontFamily: AppFonts.urdufont,
-                  //       fontSize: 20,
-                  //       height: 2,
-                  //     ),
-                  //   ),
-                  //   trailing: Text(
-                  //     hadithlength,
-                  //     style: TextStyle(
-                  //       fontFamily: AppFonts.arabicfont,
-                  //       fontSize: 16,
-                  //       color: Colors.black87,
-                  //     ),
-                  //   ),
-                  // ),
-                );
-              },
-            );
-          },
-        ),
+                                children: [
+                                  Text(
+                                    hadithlength,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.arabicfont,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Text(
+                                      maxLines: 3, // 🔴 important
+                                      overflow:
+                                          TextOverflow.ellipsis, // 🔴 important
+                                      textAlign:
+                                          TextAlign.right, // Urdu ke liye
+                                      chapter.chapterUrdu ?? '',
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // ListTile(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => MajahDetailedUrdu(
+                        //           chapterIdss: chapter.chapterNumber,
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   title: Text(
+                        //     chapter.chapterUrdu ?? "No name",
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.urdufont,
+                        //       fontSize: 20,
+                        //       height: 2,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     hadithlength,
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.arabicfont,
+                        //       fontSize: 16,
+                        //       color: Colors.black87,
+                        //     ),
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              )
+            : Builder(
+                builder: (context) {
+                  if (isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  } else if (hasError) {
+                    return const Center(
+                      child: Text("No Internet Connection ❌"),
+                    );
+                  } else if (chaptersList.isEmpty) {
+                    return const Center(child: Text("No chapters found"));
+                  }
+
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final hadithlength = ibnMajahHadithRanges[index];
+                      final chapter = chaptersList[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MajahDetailedUrdu(
+                                  chapterIdss: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            // height: 80,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+
+                                children: [
+                                  Text(
+                                    hadithlength,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.arabicfont,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Text(
+                                      maxLines: 3, // 🔴 important
+                                      overflow:
+                                          TextOverflow.ellipsis, // 🔴 important
+                                      textAlign:
+                                          TextAlign.right, // Urdu ke liye
+                                      chapter.chapterUrdu ?? '',
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // ListTile(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => MajahDetailedUrdu(
+                        //           chapterIdss: chapter.chapterNumber,
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   title: Text(
+                        //     chapter.chapterUrdu ?? "No name",
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.urdufont,
+                        //       fontSize: 20,
+                        //       height: 2,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     hadithlength,
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.arabicfont,
+                        //       fontSize: 16,
+                        //       color: Colors.black87,
+                        //     ),
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              ),
       ),
       onWillPop: () async {
         AdController().tryShowAd();
