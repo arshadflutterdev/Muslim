@@ -107,6 +107,15 @@ class _HadithdetailsState extends State<Hadithdetails> {
     }
   }
 
+  //lets get hadiths from api for web
+  Future getHadiths() async {
+    final apiKey =
+        r"https://hadithapi.com/api/hadiths/?apiKey=$2y$10$pk5MeOVosBVG5x5EgPZQOuYdd4Mo6JFFrVOT2z9xGA9oAO4eu6rte";
+    try {} catch (e) {
+      e.toString();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
