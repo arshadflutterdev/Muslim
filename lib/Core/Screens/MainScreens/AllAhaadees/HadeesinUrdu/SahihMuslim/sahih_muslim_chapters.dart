@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/HadeesinUrdu/Sahihmuslim/sahimuslimdetails.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sahihmuslim/sahimuslimdetails.dart';
@@ -159,7 +160,114 @@ class _SahihMuslimChaptersssUrduState extends State<SahihMuslimChaptersssUrdu> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: isLoading
+        body: kIsWeb
+            ? FutureBuilder(
+                future: muslimChapterList(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.green),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: chaptersList.length,
+                    itemBuilder: (context, index) {
+                      final chapter = chaptersList[index];
+                      final hadithss = sahihMuslimHadithRanges[index];
+                      return Card(
+                        elevation: 3,
+                        color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SahimuslimdetailsUrdu(
+                                  ChapterIds: chapter.chapterNumber,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            // height: 80,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+
+                                children: [
+                                  Text(
+                                    hadithss,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.arabicfont,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: Text(
+                                      maxLines: 3, // 🔴 important
+                                      overflow:
+                                          TextOverflow.ellipsis, // 🔴 important
+                                      textAlign:
+                                          TextAlign.right, // Urdu ke liye
+                                      chapter.chapterUrdu ?? '',
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.urdufont,
+                                        fontSize: 22,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // ListTile(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => SahimuslimdetailsUrdu(
+                        //           ChapterIds: chapter.chapterNumber,
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   title: Text(
+                        //     chapter.chapterUrdu ?? "No name",
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.urdufont,
+                        //       fontSize: 20,
+                        //       height: 2,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     hadithss,
+                        //     style: TextStyle(
+                        //       fontFamily: AppFonts.arabicfont,
+                        //       fontSize: 16,
+                        //       color: Colors.black87,
+                        //     ),
+                        //   ),
+                        // ),
+                      );
+                    },
+                  );
+                },
+              )
+            : isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.green),
               )
