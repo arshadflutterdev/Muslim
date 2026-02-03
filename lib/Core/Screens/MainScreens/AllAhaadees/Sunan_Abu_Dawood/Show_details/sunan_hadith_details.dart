@@ -83,7 +83,8 @@ class _SunanHadithDetailsState extends State<SunanHadithDetails> {
     }
   }
 
-  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/abudowood-hadith";
+  final String apiUrl =
+      "https://hadith-proxy-mpc6.vercel.app/abudowood-hadiths";
 
   Future<void> getHadiths() async {
     setState(() => isLoading = true);
