@@ -371,7 +371,9 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                                childAspectRatio: 5.5,
+                                childAspectRatio: 2.5,
+                                crossAxisSpacing: 10, // کالمز کے درمیان فاصلہ
+                                mainAxisSpacing: 10,
                               ),
                           itemBuilder: (context, index) {
                             final book = booksList[index];
@@ -386,11 +388,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                 onTap: () {
                                   handleBookTap(slug: slug, isUrdu: false);
                                 },
-                                trailing: Text(
-                                  overflow: TextOverflow.ellipsis,
+                                trailing: Expanded(
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
 
-                                  book.chaptersCount ?? "",
-                                  style: TextStyle(fontSize: height * 0.030),
+                                    book.chaptersCount ?? "",
+                                    style: TextStyle(fontSize: height * 0.030),
+                                  ),
                                 ),
                                 title: Text(
                                   book.bookName ?? "",
