@@ -316,12 +316,18 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
           backgroundColor: const Color(0xFFFCF8F6),
           title: Text(
             "Hadees",
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.black54,
-              letterSpacing: 3,
-              fontFamily: AppFonts.engfont,
-            ),
+            style: kIsWeb
+                ? TextStyle(
+                    fontSize: height * 0.080,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2F3E34),
+                  )
+                : TextStyle(
+                    fontSize: 30,
+                    color: Colors.black54,
+                    letterSpacing: 3,
+                    fontFamily: AppFonts.engfont,
+                  ),
           ),
         ),
         backgroundColor: const Color(0xFFFCF8F6),
@@ -395,14 +401,14 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                                             book.bookName ?? "",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 22,
                                               color: namecolors[index],
                                             ),
                                           ),
-                                          Text(
-                                            book.chaptersCount ?? "",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
+                                          // Text(
+                                          //   book.chaptersCount ?? "",
+                                          //   style: TextStyle(fontSize: 12),
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -535,48 +541,51 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                       : booksList.isEmpty
                       ? const Center(child: Text("No Hadith books found"))
                       : (kIsWeb)
-                      ? GridView.builder(
-                          itemCount: booksList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 6,
-                              ),
-                          itemBuilder: (context, index) {
-                            final book = booksList[index];
-                            final slug = book.bookSlug ?? "";
-                            return Card(
-                              color: Colors.white,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ListTile(
-                                onTap: () {
-                                  handleBookTap(slug: slug, isUrdu: true);
-                                },
-                                trailing: FittedBox(
-                                  child: Center(
-                                    child: Text(
-                                      overflow: TextOverflow.ellipsis,
-                                      urduBookNames[slug] ??
-                                          book.bookName ??
-                                          "",
-                                      style: TextStyle(
-                                        fontFamily: AppFonts.urdufont,
-                                        fontSize: height * 0.040,
-                                        color: namecolors[index],
+                      ? SingleChildScrollView(
+                          child: Wrap(
+                            spacing: 10, // کارڈز کے درمیان افقی فاصلہ
+                            runSpacing: 10, // لائنوں کے درمیان عمودی فاصلہ
+                            children: booksList.map((book) {
+                              final index = booksList.indexOf(book);
+                              final String slug = book.bookSlug ?? "";
+                              return SizedBox(
+                                // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
+                                width:
+                                    (MediaQuery.of(context).size.width / 3) -
+                                    15,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    handleBookTap(slug: slug, isUrdu: true);
+                                  },
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // یہ ہائٹ کو ٹیکسٹ کے مطابق رکھے گا
+                                        children: [
+                                          Text(
+                                            book.bookName ?? "",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                              color: namecolors[index],
+                                            ),
+                                          ),
+                                          // Text(
+                                          //   book.chaptersCount ?? "",
+                                          //   style: TextStyle(fontSize: 12),
+                                          // ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                title: Text(
-                                  book.chaptersCount ?? "",
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                            );
-                          },
+                              );
+                            }).toList(),
+                          ),
                         )
                       : ListView.builder(
                           itemCount: booksList.length,
