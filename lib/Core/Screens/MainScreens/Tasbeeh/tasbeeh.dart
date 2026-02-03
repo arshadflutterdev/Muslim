@@ -225,206 +225,206 @@ class _TasbeehState extends State<Tasbeeh> {
                 ),
                 child: Column(
                   children: [
-                    // Gap(height * 0.002),
+                    // Gap(height * 0.012),
                     // Top Container with refresh, sound, vibration, font
                     Container(
-                      height: height * 0.10,
+                      // height: height * 0.12,
                       width: double.infinity,
                       color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: height * 0.010),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                AdController().tryShowAd();
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              AdController().tryShowAd();
 
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.arrow_back_ios_new),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: Text(
-                                "Tasbeeh",
-                                style: Apptextstyle.title.copyWith(
-                                  color: Colors.black54,
-                                  letterSpacing: 2,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-
-                            //save iconbutton0 that below saved in watsapp
-                            IconButton0(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      title: const Text("Reset Options"),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // 1. Reset Current Counter
-                                          CustomTextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                counters[currentIndex] = 0;
-                                              });
-                                              savedata();
-
-                                              AdController().tryShowAd();
-
-                                              Navigator.pop(context);
-                                            },
-                                            bchild: const Text(
-                                              "Reset Current Counter",
-                                              style: TextStyle(
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 2. Reset All Counters
-                                          CustomTextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                counters = List.filled(
-                                                  azkaar.length,
-                                                  0,
-                                                );
-                                              });
-                                              savedata();
-
-                                              AdController().tryShowAd();
-
-                                              Navigator.pop(context);
-                                            },
-                                            bchild: const Text(
-                                              "Reset All Counters",
-                                              style: TextStyle(
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 3. Reset Current Round
-                                          CustomTextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                round = 1;
-                                              });
-                                              savedata();
-
-                                              AdController().tryShowAd();
-
-                                              Navigator.pop(context);
-                                            },
-                                            bchild: const Text(
-                                              "Reset Current Round",
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 4. Reset All Rounds
-                                          CustomTextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                round = 1;
-                                                // If you have rounds list per zikr
-                                                rounds = List.filled(
-                                                  azkaar.length,
-                                                  1,
-                                                );
-                                              });
-                                              savedata();
-
-                                              AdController().tryShowAd();
-
-                                              Navigator.pop(context);
-                                            },
-                                            bchild: const Text(
-                                              "Reset All Rounds",
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Optional Cancel Button
-                                          CustomTextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            bchild: const Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              bicon: const Icon(
-                                Icons.refresh,
-                                size: 25,
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.arrow_back_ios_new),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Tasbeeh",
+                              style: Apptextstyle.title.copyWith(
                                 color: Colors.black54,
+                                letterSpacing: 2,
+                                fontSize: 18,
                               ),
                             ),
-                            IconButton0(
-                              bicon: Icon(
-                                soundselected
-                                    ? CupertinoIcons.volume_mute
-                                    : CupertinoIcons.volume_up,
-                                size: 25,
-                                color: Colors.black54,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  soundselected = !soundselected;
-                                });
-                              },
-                            ),
-                            IconButton0(
-                              bicon: selectvibr
-                                  ? Icon(
-                                      CupertinoIcons.volume_off,
-                                      size: 25,
-                                      color: Colors.black54,
-                                    )
-                                  : Icon(
-                                      Icons.vibration,
-                                      size: 25,
-                                      color: Colors.black54,
+                          ),
+                          const Spacer(),
+
+                          //save iconbutton0 that below saved in watsapp
+                          IconButton0(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    title: const Text("Reset Options"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // 1. Reset Current Counter
+                                        CustomTextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              counters[currentIndex] = 0;
+                                            });
+                                            savedata();
+                                            // RewardedAdServices.showRewardAd(
+                                            //   onUserEarnedReward: (rewardCoins) {
+                                            //     debugPrint(
+                                            //       "User gets reward $rewardCoins",
+                                            //     );
+                                            //   },
+                                            // );
+
+                                            AdController().tryShowAd();
+
+                                            Navigator.pop(context);
+                                          },
+                                          bchild: const Text(
+                                            "Reset Current Counter",
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 2. Reset All Counters
+                                        CustomTextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              counters = List.filled(
+                                                azkaar.length,
+                                                0,
+                                              );
+                                            });
+                                            savedata();
+
+                                            AdController().tryShowAd();
+
+                                            Navigator.pop(context);
+                                          },
+                                          bchild: const Text(
+                                            "Reset All Counters",
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 3. Reset Current Round
+                                        CustomTextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              round = 1;
+                                            });
+                                            savedata();
+
+                                            AdController().tryShowAd();
+
+                                            Navigator.pop(context);
+                                          },
+                                          bchild: const Text(
+                                            "Reset Current Round",
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 4. Reset All Rounds
+                                        CustomTextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              round = 1;
+                                              // If you have rounds list per zikr
+                                              rounds = List.filled(
+                                                azkaar.length,
+                                                1,
+                                              );
+                                            });
+                                            savedata();
+
+                                            AdController().tryShowAd();
+
+                                            Navigator.pop(context);
+                                          },
+                                          bchild: const Text(
+                                            "Reset All Rounds",
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Optional Cancel Button
+                                        CustomTextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          bchild: const Text(
+                                            "Cancel",
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-
-                              onPressed: () {
-                                setState(() {
-                                  selectvibr = !selectvibr;
-                                });
-                              },
+                                  );
+                                },
+                              );
+                            },
+                            bicon: const Icon(
+                              Icons.refresh,
+                              size: 25,
+                              color: Colors.black54,
                             ),
-                          ],
-                        ),
+                          ),
+                          IconButton0(
+                            bicon: Icon(
+                              soundselected
+                                  ? CupertinoIcons.volume_mute
+                                  : CupertinoIcons.volume_up,
+                              size: 25,
+                              color: Colors.black54,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                soundselected = !soundselected;
+                              });
+                            },
+                          ),
+                          IconButton0(
+                            bicon: selectvibr
+                                ? Icon(
+                                    CupertinoIcons.volume_off,
+                                    size: 25,
+                                    color: Colors.black54,
+                                  )
+                                : Icon(
+                                    Icons.vibration,
+                                    size: 25,
+                                    color: Colors.black54,
+                                  ),
+
+                            onPressed: () {
+                              setState(() {
+                                selectvibr = !selectvibr;
+                              });
+                            },
+                          ),
+                        ],
                       ),
                     ),
                     Gap(height * 0.02),
                     // Azkar display
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
                       child: CustomContainer0(
-                        height: height * 0.29,
+                        height: height * 0.32,
                         widht: double.infinity,
                         fillcolour: Color(0xff59AC77),
                         child: Padding(
@@ -432,37 +432,76 @@ class _TasbeehState extends State<Tasbeeh> {
                             horizontal: 10,
                             vertical: height * 0.009,
                           ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    (currentIndex + 1).toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      (currentIndex + 1).toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                  const Text(
-                                    "/",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
+                                    const Text(
+                                      "/",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    azkaar.length.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
+                                    Text(
+                                      azkaar.length.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
 
-                              Center(
-                                child: Text(
-                                  azkaar[currentIndex],
+                                Center(
+                                  child: Text(
+                                    azkaar[currentIndex],
+                                    style: TextStyle(
+                                      fontSize: fontsize,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton0(
+                                      onPressed: goprevious,
+                                      bicon: ImageIcon(
+                                        color: Colors.white,
+                                        AssetImage(AppImages.backbutton),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.58,
+                                      child: const Divider(
+                                        color: Colors.white,
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    IconButton0(
+                                      onPressed: goNext,
+                                      bicon: ImageIcon(
+                                        color: Colors.white,
+
+                                        AssetImage(AppImages.backbutton0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  azkarmean[currentIndex],
                                   style: TextStyle(
                                     fontSize: fontsize,
                                     color: Colors.white,
@@ -470,174 +509,133 @@ class _TasbeehState extends State<Tasbeeh> {
                                   textAlign: TextAlign.center,
                                   textDirection: TextDirection.rtl,
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton0(
-                                    onPressed: goprevious,
-                                    bicon: ImageIcon(
-                                      color: Colors.white,
-                                      AssetImage(AppImages.backbutton),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.58,
-                                    child: const Divider(
-                                      color: Colors.white,
-                                      thickness: 2,
-                                    ),
-                                  ),
-                                  IconButton0(
-                                    onPressed: goNext,
-                                    bicon: ImageIcon(
-                                      color: Colors.white,
-
-                                      AssetImage(AppImages.backbutton0),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                azkarmean[currentIndex],
-                                style: TextStyle(
-                                  fontSize: fontsize,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                                textDirection: TextDirection.rtl,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
+
                     Expanded(
                       child: Container(
-                        color: Colors.white,
+                        color: Colors.red,
                         width: double.infinity,
                         child: LayoutBuilder(
                           builder: (context, constraints) {
-                            return SingleChildScrollView(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  minHeight: constraints.maxHeight,
-                                ),
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    // ✅ CLICK ANYWHERE = LEFT BEAD TAP (+1)
-                                    if (!soundselected) tick();
-                                    if (!selectvibr) vibr();
-                                    beadsKey.currentState?.triggerLeftBeadTap();
-                                  },
-                                  onHorizontalDragEnd: (details) {
-                                    if (details.primaryVelocity != null) {
-                                      if (details.primaryVelocity! < 0) {
-                                        // ✅ SWIPE LEFT → DECREMENT
-                                        // countermin();
-                                        if (!soundselected) tick();
-                                        if (!selectvibr) vibr();
-                                        beadsKey.currentState
-                                            ?.triggerRightBeadTap(); // move right bead left
-                                      } else if (details.primaryVelocity! > 0) {
-                                        // ✅ SWIPE RIGHT → INCREMENT
-                                        // counterplus();
-                                        if (!soundselected) tick();
-                                        if (!selectvibr) vibr();
-                                        beadsKey.currentState
-                                            ?.triggerLeftBeadTap(); // move left bead right
-                                      }
+                            return ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight,
+                              ),
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  // ✅ CLICK ANYWHERE = LEFT BEAD TAP (+1)
+                                  if (!soundselected) tick();
+                                  if (!selectvibr) vibr();
+                                  beadsKey.currentState?.triggerLeftBeadTap();
+                                },
+                                onHorizontalDragEnd: (details) {
+                                  if (details.primaryVelocity != null) {
+                                    if (details.primaryVelocity! < 0) {
+                                      // ✅ SWIPE LEFT → DECREMENT
+                                      // countermin();
+                                      if (!soundselected) tick();
+                                      if (!selectvibr) vibr();
+                                      beadsKey.currentState
+                                          ?.triggerRightBeadTap(); // move right bead left
+                                    } else if (details.primaryVelocity! > 0) {
+                                      // ✅ SWIPE RIGHT → INCREMENT
+                                      // counterplus();
+                                      if (!soundselected) tick();
+                                      if (!selectvibr) vibr();
+                                      beadsKey.currentState
+                                          ?.triggerLeftBeadTap(); // move left bead right
                                     }
-                                  },
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical:
-                                                constraints.maxHeight * 0.02,
-                                          ),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Container(
-                                              height: 100,
-                                              width: 400,
-                                              color: Colors.white,
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        counters[currentIndex]
-                                                            .toString(),
-                                                        style: Apptextstyle
-                                                            .title
-                                                            .copyWith(
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                              fontSize: 50,
-                                                            ),
+                                  }
+                                },
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical:
+                                              constraints.maxHeight * 0.02,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Container(
+                                            height: 100,
+                                            width: 400,
+                                            color: Colors.white,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      counters[currentIndex]
+                                                          .toString(),
+                                                      style: Apptextstyle.title
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 50,
+                                                          ),
+                                                    ),
+                                                    const Text(
+                                                      "/",
+                                                      style: TextStyle(
+                                                        fontSize: 45,
+                                                        color: Colors.black38,
                                                       ),
-                                                      const Text(
-                                                        "/",
-                                                        style: TextStyle(
-                                                          fontSize: 45,
-                                                          color: Colors.black38,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        selectedNumbers[currentIndex]
-                                                            .toString(),
-                                                        style: Apptextstyle
-                                                            .title
-                                                            .copyWith(
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      const Text("Round :"),
-                                                      Text(" $round"),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                    ),
+                                                    Text(
+                                                      selectedNumbers[currentIndex]
+                                                          .toString(),
+                                                      style: Apptextstyle.title
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Text("Round :"),
+                                                    Text(" $round"),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(height: 2),
-                                        AspectRatio(
-                                          aspectRatio: 2.5,
-                                          child: AnimatedBeadsCounter(
-                                            key: beadsKey,
-                                            beadColor:
-                                                tasbehcolor[selectedcolour],
-                                            onLeftBeadTap: () {
-                                              counterplus();
-                                              if (!soundselected) tick();
-                                              if (!selectvibr) vibr();
-                                            },
-                                            onRightBeadTap: () {
-                                              countermin(); // ✅ CHANGE HERE: right bead tap = decrement
-                                              if (!soundselected) tick();
-                                              if (!selectvibr) vibr();
-                                            },
-                                          ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      AspectRatio(
+                                        aspectRatio: 2.5,
+                                        child: AnimatedBeadsCounter(
+                                          key: beadsKey,
+                                          beadColor:
+                                              tasbehcolor[selectedcolour],
+                                          onLeftBeadTap: () {
+                                            counterplus();
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
+                                          onRightBeadTap: () {
+                                            countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                            if (!soundselected) tick();
+                                            if (!selectvibr) vibr();
+                                          },
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
