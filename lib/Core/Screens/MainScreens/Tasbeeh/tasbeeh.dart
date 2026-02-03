@@ -313,13 +313,6 @@ class _TasbeehState extends State<Tasbeeh> {
                                                 );
                                               });
                                               savedata();
-                                              // RewardedAdServices.showRewardAd(
-                                              //   onUserEarnedReward: (rewardCoins) {
-                                              //     debugPrint(
-                                              //       "User gets reward $rewardCoins",
-                                              //     );
-                                              //   },
-                                              // );
 
                                               AdController().tryShowAd();
 
@@ -340,13 +333,6 @@ class _TasbeehState extends State<Tasbeeh> {
                                                 round = 1;
                                               });
                                               savedata();
-                                              // RewardedAdServices.showRewardAd(
-                                              //   onUserEarnedReward: (rewardCoins) {
-                                              //     debugPrint(
-                                              //       "User gets reward $rewardCoins",
-                                              //     );
-                                              //   },
-                                              // );
 
                                               AdController().tryShowAd();
 
@@ -372,13 +358,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                                 );
                                               });
                                               savedata();
-                                              // RewardedAdServices.showRewardAd(
-                                              //   onUserEarnedReward: (rewardCoins) {
-                                              //     debugPrint(
-                                              //       "User gets $rewardCoins",
-                                              //     );
-                                              //   },
-                                              // );
+
                                               AdController().tryShowAd();
 
                                               Navigator.pop(context);
@@ -448,65 +428,6 @@ class _TasbeehState extends State<Tasbeeh> {
                                 });
                               },
                             ),
-
-                            //size changer removed
-                            // IconButton0(
-                            //   onPressed: () {
-                            //     showModalBottomSheet(
-                            //       context: context,
-                            //       builder: (context) {
-                            //         return StatefulBuilder(
-                            //           builder: (context, setModalState) {
-                            //             return CustomContainer0(
-                            //               height: height * 0.12,
-                            //               fillcolour: Colors.white,
-                            //               child: Column(
-                            //                 children: [
-                            //                   const Text(
-                            //                     "Change Font Size",
-                            //                     style: TextStyle(fontSize: 16),
-                            //                   ),
-                            //                   Row(
-                            //                     mainAxisAlignment:
-                            //                         MainAxisAlignment.center,
-                            //                     children: [
-                            //                       const Text("10"),
-                            //                       SizedBox(
-                            //                         width: width * 0.8,
-                            //                         child: Slider(
-                            //                           min: 10,
-                            //                           max: 50,
-                            //                           divisions: 40,
-                            //                           label: fontsize
-                            //                               .round()
-                            //                               .toString(),
-                            //                           value: fontsize,
-                            //                           activeColor: Colors.green,
-                            //                           onChanged: (value) {
-                            //                             setModalState(() {
-                            //                               fontsize = value;
-                            //                             });
-                            //                             setState(() {});
-                            //                           },
-                            //                         ),
-                            //                       ),
-                            //                       const Text("50"),
-                            //                     ],
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             );
-                            //           },
-                            //         );
-                            //       },
-                            //     );
-                            //   },
-                            //   bicon: const Icon(
-                            //     Icons.font_download_outlined,
-                            //     size: 30,
-                            //     color: Colors.black54,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -524,75 +445,37 @@ class _TasbeehState extends State<Tasbeeh> {
                             horizontal: 10,
                             vertical: height * 0.009,
                           ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      (currentIndex + 1).toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    (currentIndex + 1).toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
                                     ),
-                                    const Text(
-                                      "/",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      azkaar.length.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                Center(
-                                  child: Text(
-                                    azkaar[currentIndex],
+                                  ),
+                                  const Text(
+                                    "/",
                                     style: TextStyle(
-                                      fontSize: fontsize,
+                                      fontSize: 18,
                                       color: Colors.white,
                                     ),
-                                    textAlign: TextAlign.center,
-                                    textDirection: TextDirection.rtl,
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton0(
-                                      onPressed: goprevious,
-                                      bicon: ImageIcon(
-                                        color: Colors.white,
-                                        AssetImage(AppImages.backbutton),
-                                      ),
+                                  Text(
+                                    azkaar.length.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
                                     ),
-                                    SizedBox(
-                                      width: width * 0.58,
-                                      child: const Divider(
-                                        color: Colors.white,
-                                        thickness: 2,
-                                      ),
-                                    ),
-                                    IconButton0(
-                                      onPressed: goNext,
-                                      bicon: ImageIcon(
-                                        color: Colors.white,
+                                  ),
+                                ],
+                              ),
 
-                                        AssetImage(AppImages.backbutton0),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  azkarmean[currentIndex],
+                              Center(
+                                child: Text(
+                                  azkaar[currentIndex],
                                   style: TextStyle(
                                     fontSize: fontsize,
                                     color: Colors.white,
@@ -600,8 +483,44 @@ class _TasbeehState extends State<Tasbeeh> {
                                   textAlign: TextAlign.center,
                                   textDirection: TextDirection.rtl,
                                 ),
-                              ],
-                            ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton0(
+                                    onPressed: goprevious,
+                                    bicon: ImageIcon(
+                                      color: Colors.white,
+                                      AssetImage(AppImages.backbutton),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.58,
+                                    child: const Divider(
+                                      color: Colors.white,
+                                      thickness: 2,
+                                    ),
+                                  ),
+                                  IconButton0(
+                                    onPressed: goNext,
+                                    bicon: ImageIcon(
+                                      color: Colors.white,
+
+                                      AssetImage(AppImages.backbutton0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                azkarmean[currentIndex],
+                                style: TextStyle(
+                                  fontSize: fontsize,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -644,78 +563,94 @@ class _TasbeehState extends State<Tasbeeh> {
                                       }
                                     }
                                   },
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical:
-                                              constraints.maxHeight * 0.02,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  counters[currentIndex]
-                                                      .toString(),
-                                                  style: Apptextstyle.title
-                                                      .copyWith(
-                                                        color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 50,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical:
+                                                constraints.maxHeight * 0.02,
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Container(
+                                              height: 100,
+                                              width: 400,
+                                              color: Colors.white,
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        counters[currentIndex]
+                                                            .toString(),
+                                                        style: Apptextstyle
+                                                            .title
+                                                            .copyWith(
+                                                              color: Colors
+                                                                  .black54,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              fontSize: 50,
+                                                            ),
                                                       ),
-                                                ),
-                                                const Text(
-                                                  "/",
-                                                  style: TextStyle(
-                                                    fontSize: 45,
-                                                    color: Colors.black38,
+                                                      const Text(
+                                                        "/",
+                                                        style: TextStyle(
+                                                          fontSize: 45,
+                                                          color: Colors.black38,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        selectedNumbers[currentIndex]
+                                                            .toString(),
+                                                        style: Apptextstyle
+                                                            .title
+                                                            .copyWith(
+                                                              color: Colors
+                                                                  .black54,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                Text(
-                                                  selectedNumbers[currentIndex]
-                                                      .toString(),
-                                                  style: Apptextstyle.title
-                                                      .copyWith(
-                                                        color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                ),
-                                              ],
+                                                  Row(
+                                                    children: [
+                                                      const Text("Round :"),
+                                                      Text(" $round"),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            Row(
-                                              children: [
-                                                const Text("Round :"),
-                                                Text(" $round"),
-                                              ],
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      AspectRatio(
-                                        aspectRatio: 2.5,
-                                        child: AnimatedBeadsCounter(
-                                          key: beadsKey,
-                                          beadColor:
-                                              tasbehcolor[selectedcolour],
-                                          onLeftBeadTap: () {
-                                            counterplus();
-                                            if (!soundselected) tick();
-                                            if (!selectvibr) vibr();
-                                          },
-                                          onRightBeadTap: () {
-                                            countermin(); // ✅ CHANGE HERE: right bead tap = decrement
-                                            if (!soundselected) tick();
-                                            if (!selectvibr) vibr();
-                                          },
+                                        const SizedBox(height: 2),
+                                        AspectRatio(
+                                          aspectRatio: 2.5,
+                                          child: AnimatedBeadsCounter(
+                                            key: beadsKey,
+                                            beadColor:
+                                                tasbehcolor[selectedcolour],
+                                            onLeftBeadTap: () {
+                                              counterplus();
+                                              if (!soundselected) tick();
+                                              if (!selectvibr) vibr();
+                                            },
+                                            onRightBeadTap: () {
+                                              countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                              if (!soundselected) tick();
+                                              if (!selectvibr) vibr();
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
