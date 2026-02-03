@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:muslim/Core/Const/app_fonts.dart';
 import 'package:muslim/Core/Screens/MainScreens/AllAhaadees/Sunan_Abu_Dawood/Models/hadithdetailsmodel.dart';
 import 'package:muslim/Core/Services/ad_controller.dart';
@@ -8,6 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class SunanHadithDetailsUrdu extends StatefulWidget {
   final String? chapterno;
@@ -80,11 +82,48 @@ class _SunanHadithDetailsUrduState extends State<SunanHadithDetailsUrdu> {
     }
   }
 
+  final String apiUrl = "https://hadith-proxy-mpc6.vercel.app/abudowood-hadith";
+
+  Future<void> getHadiths() async {
+    setState(() => isLoading = true);
+
+    // 2. URL mein Chapter ID add karein taake wahi data aaye jo chahiye
+    final String finalUrl = "$apiUrl?chapter=${widget.chapterno}";
+    try {
+      print("Fetching from: $finalUrl");
+      final response = await http.get(Uri.parse(finalUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decodedData = jsonDecode(response.body);
+
+        // API response mein 'hadiths' ke andar 'data' hota hai
+        if (decodedData['hadiths'] != null &&
+            decodedData['hadiths']['data'] != null) {
+          final List<dynamic> fetchedList = decodedData['hadiths']['data'];
+
+          setState(() {
+            // Ab filter lagane ki zaroorat nahi, API khud filter karke degi
+            haditsss = fetchedList.map((h) => Data.fromJson(h)).toList();
+            isLoading = false;
+          });
+          print("Data Loaded: ${haditsss.length} hadiths");
+        }
+      }
+    } catch (e) {
+      print("Error: $e");
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    if (kIsWeb) {
+      getHadiths();
+    } else {
+      getdownloadhadith();
+    }
     // loadHadithData();
-    getdownloadhadith();
   }
 
   // Future<void> loadHadithData() async {
