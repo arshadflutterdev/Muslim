@@ -424,7 +424,7 @@ class _TasbeehState extends State<Tasbeeh> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 28),
                       child: CustomContainer0(
-                        height: height * 0.32,
+                        height: height * 0.29,
                         widht: double.infinity,
                         fillcolour: Color(0xff59AC77),
                         child: Padding(
@@ -433,7 +433,6 @@ class _TasbeehState extends State<Tasbeeh> {
                             vertical: height * 0.009,
                           ),
                           child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
                             child: Column(
                               children: [
                                 Row(
@@ -553,90 +552,96 @@ class _TasbeehState extends State<Tasbeeh> {
                                     }
                                   }
                                 },
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical:
-                                              constraints.maxHeight * 0.02,
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Container(
-                                            height: 100,
-                                            width: 400,
-                                            color: Colors.white,
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      counters[currentIndex]
-                                                          .toString(),
-                                                      style: Apptextstyle.title
-                                                          .copyWith(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                            fontSize: 50,
-                                                          ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: constraints.maxHeight * 0.02,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Container(
+                                          height: 100,
+                                          width: 400,
+                                          color: Colors.green,
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    counters[currentIndex]
+                                                        .toString(),
+                                                    style: Apptextstyle.title
+                                                        .copyWith(
+                                                          color: Colors.black54,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 50,
+                                                        ),
+                                                  ),
+                                                  const Text(
+                                                    "/",
+                                                    style: TextStyle(
+                                                      fontSize: 45,
+                                                      color: Colors.black38,
                                                     ),
-                                                    const Text(
-                                                      "/",
-                                                      style: TextStyle(
-                                                        fontSize: 45,
-                                                        color: Colors.black38,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      selectedNumbers[currentIndex]
-                                                          .toString(),
-                                                      style: Apptextstyle.title
-                                                          .copyWith(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const Text("Round :"),
-                                                    Text(" $round"),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                  ),
+                                                  Text(
+                                                    selectedNumbers[currentIndex]
+                                                        .toString(),
+                                                    style: Apptextstyle.title
+                                                        .copyWith(
+                                                          color: Colors.black54,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Text("Round :"),
+                                                  Text(" $round"),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 2),
-                                      AspectRatio(
-                                        aspectRatio: 2.5,
-                                        child: AnimatedBeadsCounter(
-                                          key: beadsKey,
-                                          beadColor:
-                                              tasbehcolor[selectedcolour],
-                                          onLeftBeadTap: () {
-                                            counterplus();
-                                            if (!soundselected) tick();
-                                            if (!selectvibr) vibr();
-                                          },
-                                          onRightBeadTap: () {
-                                            countermin(); // ✅ CHANGE HERE: right bead tap = decrement
-                                            if (!soundselected) tick();
-                                            if (!selectvibr) vibr();
-                                          },
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Container(
+                                      height: 200,
+                                      width: double.infinity,
+                                      color: Colors.red,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            AspectRatio(
+                                              aspectRatio: 2.5,
+                                              child: AnimatedBeadsCounter(
+                                                key: beadsKey,
+                                                beadColor:
+                                                    tasbehcolor[selectedcolour],
+                                                onLeftBeadTap: () {
+                                                  counterplus();
+                                                  if (!soundselected) tick();
+                                                  if (!selectvibr) vibr();
+                                                },
+                                                onRightBeadTap: () {
+                                                  countermin(); // ✅ CHANGE HERE: right bead tap = decrement
+                                                  if (!soundselected) tick();
+                                                  if (!selectvibr) vibr();
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
@@ -644,8 +649,6 @@ class _TasbeehState extends State<Tasbeeh> {
                         ),
                       ),
                     ),
-
-                    Gap(height * 0.05),
                   ],
                 ),
               )
