@@ -503,13 +503,13 @@ class _TasbeehState extends State<Tasbeeh> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: CustomContainer0(
-                  height: height * 0.29,
+                  height: height * 0.22,
                   widht: double.infinity,
                   fillcolour: Color(0xff59AC77),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: height * 0.009,
+                      // vertical: height * 0.001,
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -520,13 +520,13 @@ class _TasbeehState extends State<Tasbeeh> {
                                 (currentIndex + 1).toString(),
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                 ),
                               ),
                               const Text(
                                 "/",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Colors.white,
                                 ),
                               ),
@@ -544,7 +544,7 @@ class _TasbeehState extends State<Tasbeeh> {
                             child: Text(
                               azkaar[currentIndex],
                               style: TextStyle(
-                                fontSize: fontsize,
+                                fontSize: 22,
                                 color: Colors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -565,7 +565,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                 width: width * 0.58,
                                 child: const Divider(
                                   color: Colors.white,
-                                  thickness: 2,
+                                  thickness: 1,
                                 ),
                               ),
                               IconButton0(
@@ -580,10 +580,7 @@ class _TasbeehState extends State<Tasbeeh> {
                           ),
                           Text(
                             azkarmean[currentIndex],
-                            style: TextStyle(
-                              fontSize: fontsize,
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(fontSize: 22, color: Colors.white),
                             textAlign: TextAlign.center,
                             textDirection: TextDirection.rtl,
                           ),
@@ -639,47 +636,55 @@ class _TasbeehState extends State<Tasbeeh> {
                                         horizontal: 12,
                                         vertical: constraints.maxHeight * 0.02,
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Row(
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Container(
+                                          height: 100,
+                                          // width: 100,
+                                          color: Colors.white,
+                                          child: Column(
                                             children: [
-                                              Text(
-                                                counters[currentIndex]
-                                                    .toString(),
-                                                style: Apptextstyle.title
-                                                    .copyWith(
-                                                      color: Colors.black54,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize: 50,
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    counters[currentIndex]
+                                                        .toString(),
+                                                    style: Apptextstyle.title
+                                                        .copyWith(
+                                                          color: Colors.black54,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 50,
+                                                        ),
+                                                  ),
+                                                  const Text(
+                                                    "/",
+                                                    style: TextStyle(
+                                                      fontSize: 45,
+                                                      color: Colors.black38,
                                                     ),
+                                                  ),
+                                                  Text(
+                                                    selectedNumbers[currentIndex]
+                                                        .toString(),
+                                                    style: Apptextstyle.title
+                                                        .copyWith(
+                                                          color: Colors.black54,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                  ),
+                                                ],
                                               ),
-                                              const Text(
-                                                "/",
-                                                style: TextStyle(
-                                                  fontSize: 45,
-                                                  color: Colors.black38,
-                                                ),
-                                              ),
-                                              Text(
-                                                selectedNumbers[currentIndex]
-                                                    .toString(),
-                                                style: Apptextstyle.title
-                                                    .copyWith(
-                                                      color: Colors.black54,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
+                                              Row(
+                                                children: [
+                                                  const Text("Round :"),
+                                                  Text(" $round"),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            children: [
-                                              const Text("Round :"),
-                                              Text(" $round"),
-                                            ],
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(height: 2),
