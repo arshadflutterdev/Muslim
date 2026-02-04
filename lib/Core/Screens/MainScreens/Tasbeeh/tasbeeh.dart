@@ -422,7 +422,7 @@ class _TasbeehState extends State<Tasbeeh> {
                     Gap(height * 0.02),
                     // Azkar display
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * .16),
+                      padding: EdgeInsets.symmetric(horizontal: width * .22),
                       child: CustomContainer0(
                         height: height * 0.29,
                         widht: double.infinity,
