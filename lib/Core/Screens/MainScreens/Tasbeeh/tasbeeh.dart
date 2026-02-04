@@ -951,7 +951,7 @@ class _TasbeehState extends State<Tasbeeh> {
 
                           Container(
                             height: 100,
-                            width: width * 0.20,
+                            width: width * 0.19,
                             color: Color(0xffFFFDF1),
                             child: Column(
                               children: [
@@ -994,7 +994,7 @@ class _TasbeehState extends State<Tasbeeh> {
                         ],
                       ),
                     ),
-                    Gap(height * 0.030),
+                    Gap(height * 0.044),
                     Expanded(
                       child: Container(
                         color: Color(0xffFFFDF1),
