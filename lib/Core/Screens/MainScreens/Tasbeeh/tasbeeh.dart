@@ -1163,7 +1163,7 @@ class _TasbeehState extends State<Tasbeeh> {
           height: height * 0.10,
 
           // width: width,
-          color: Colors.white,
+          color: Color(0xffFFFDF1),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -1172,6 +1172,7 @@ class _TasbeehState extends State<Tasbeeh> {
                 ContainerButton(
                   height: height * 0.075,
                   width: 60,
+                  colour: Color(0xffFFFDF1),
 
                   onPressed: () {
                     // Use modal bottom sheet again for consistency
@@ -1470,6 +1471,7 @@ class _TasbeehState extends State<Tasbeeh> {
                 ContainerButton(
                   height: height * 0.075,
                   width: 60,
+                  colour: Color(0xffFFFDF1),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
