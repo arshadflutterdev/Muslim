@@ -421,97 +421,159 @@ class _TasbeehState extends State<Tasbeeh> {
                     ),
                     Gap(height * 0.02),
                     // Azkar display
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * .22),
-                      child: CustomContainer0(
-                        height: height * 0.29,
-                        widht: double.infinity,
-                        fillcolour: Color(0xff59AC77),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: height * 0.009,
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      color: Colors.red,
+                      child: Row(
+                        children: [
+                          Gap(width * 0.15),
+                          Container(height: 180, width: 60, color: Colors.blue),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * .02,
+                              ),
+                              child: CustomContainer0(
+                                height: height * 0.29,
+                                widht: double.infinity,
+                                fillcolour: Color(0xff59AC77),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: height * 0.009,
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              (currentIndex + 1).toString(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            const Text(
+                                              "/",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              azkaar.length.toString(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        Center(
+                                          child: Text(
+                                            azkaar[currentIndex],
+                                            style: TextStyle(
+                                              fontSize: fontsize,
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            textDirection: TextDirection.rtl,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton0(
+                                              onPressed: goprevious,
+                                              bicon: ImageIcon(
+                                                color: Colors.white,
+                                                AssetImage(
+                                                  AppImages.backbutton,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.34,
+                                              child: const Divider(
+                                                color: Colors.white,
+                                                thickness: 2,
+                                              ),
+                                            ),
+                                            IconButton0(
+                                              onPressed: goNext,
+                                              bicon: ImageIcon(
+                                                color: Colors.white,
+
+                                                AssetImage(
+                                                  AppImages.backbutton0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          azkarmean[currentIndex],
+                                          style: TextStyle(
+                                            fontSize: fontsize,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          textDirection: TextDirection.rtl,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          child: SingleChildScrollView(
+                          Container(
+                            height: 100,
+                            width: width * 0.15,
+                            color: Colors.blue,
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Text(
-                                      (currentIndex + 1).toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                      counters[currentIndex].toString(),
+                                      style: Apptextstyle.title.copyWith(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 40,
                                       ),
                                     ),
                                     const Text(
                                       "/",
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
+                                        fontSize: 45,
+                                        color: Colors.black38,
                                       ),
                                     ),
                                     Text(
-                                      azkaar.length.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                      selectedNumbers[currentIndex].toString(),
+                                      style: Apptextstyle.title.copyWith(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ],
-                                ),
-
-                                Center(
-                                  child: Text(
-                                    azkaar[currentIndex],
-                                    style: TextStyle(
-                                      fontSize: fontsize,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    textDirection: TextDirection.rtl,
-                                  ),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    IconButton0(
-                                      onPressed: goprevious,
-                                      bicon: ImageIcon(
-                                        color: Colors.white,
-                                        AssetImage(AppImages.backbutton),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.34,
-                                      child: const Divider(
-                                        color: Colors.white,
-                                        thickness: 2,
-                                      ),
-                                    ),
-                                    IconButton0(
-                                      onPressed: goNext,
-                                      bicon: ImageIcon(
-                                        color: Colors.white,
-
-                                        AssetImage(AppImages.backbutton0),
-                                      ),
-                                    ),
+                                    const Text("Round :"),
+                                    Text(" $round"),
                                   ],
-                                ),
-                                Text(
-                                  azkarmean[currentIndex],
-                                  style: TextStyle(
-                                    fontSize: fontsize,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  textDirection: TextDirection.rtl,
                                 ),
                               ],
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
 
@@ -561,58 +623,6 @@ class _TasbeehState extends State<Tasbeeh> {
                                           horizontal: 12,
                                           vertical:
                                               constraints.maxHeight * 0.02,
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Container(
-                                            height: 100,
-                                            width: 400,
-                                            color: Color(0xffFFFDF1),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      counters[currentIndex]
-                                                          .toString(),
-                                                      style: Apptextstyle.title
-                                                          .copyWith(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                            fontSize: 50,
-                                                          ),
-                                                    ),
-                                                    const Text(
-                                                      "/",
-                                                      style: TextStyle(
-                                                        fontSize: 45,
-                                                        color: Colors.black38,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      selectedNumbers[currentIndex]
-                                                          .toString(),
-                                                      style: Apptextstyle.title
-                                                          .copyWith(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const Text("Round :"),
-                                                    Text(" $round"),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 2),
@@ -1161,9 +1171,8 @@ class _TasbeehState extends State<Tasbeeh> {
         // ---------- REPLACE your bottomSheet: Container(...) with this block ----------
         bottomSheet: Container(
           height: height * 0.10,
-
           // width: width,
-          color: Color(0xffFFFDF1),
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -1172,8 +1181,6 @@ class _TasbeehState extends State<Tasbeeh> {
                 ContainerButton(
                   height: height * 0.075,
                   width: 60,
-                  colour: Color(0xffFFFDF1),
-
                   onPressed: () {
                     // Use modal bottom sheet again for consistency
                     showModalBottomSheet(
@@ -1471,7 +1478,6 @@ class _TasbeehState extends State<Tasbeeh> {
                 ContainerButton(
                   height: height * 0.075,
                   width: 60,
-                  colour: Color(0xffFFFDF1),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
