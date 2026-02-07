@@ -181,7 +181,10 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+    bool isMobile = width < 600;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -196,7 +199,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
             "Al-Qur’an",
             style: kIsWeb
                 ? TextStyle(
-                    fontSize: height * 0.080,
+                    fontSize: isMobile ? height * 0.040 : height * 0.080,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF2F3E34),
                   )
@@ -275,12 +278,14 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
 
         body: kIsWeb
             ? Padding(
-                padding: EdgeInsets.only(top: height * 0.080),
+                padding: EdgeInsets.only(
+                  top: isMobile ? height * 0.030 : height * 0.080,
+                ),
                 child: GridView.builder(
                   itemCount: searchSurrah.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 5,
+                    crossAxisCount: isMobile ? 1 : 3,
+                    childAspectRatio: isMobile ? 4 : 5,
                   ),
                   itemBuilder: (context, index) {
                     final actualIndex = surahNames.indexOf(searchSurrah[index]);
