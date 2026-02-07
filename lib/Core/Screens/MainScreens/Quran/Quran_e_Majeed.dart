@@ -285,7 +285,7 @@ class _QuranEMajeedState extends State<QuranEMajeed> {
                   itemCount: searchSurrah.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: isMobile ? 1 : 3,
-                    childAspectRatio: isMobile ? 4 : 5,
+                    childAspectRatio: isMobile ? 5 : 5,
                   ),
                   itemBuilder: (context, index) {
                     final actualIndex = surahNames.indexOf(searchSurrah[index]);

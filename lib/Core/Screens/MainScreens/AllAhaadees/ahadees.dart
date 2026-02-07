@@ -382,7 +382,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               final String slug = book.bookSlug ?? "";
                               return SizedBox(
                                 // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
-                                height: isMobile ? 80 : 50,
+                                height: isMobile ? 80 : 70,
                                 width: isMobile
                                     ? (MediaQuery.of(context).size.width / 1) -
                                           15
@@ -557,7 +557,7 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
                               final index = booksList.indexOf(book);
                               final String slug = book.bookSlug ?? "";
                               return SizedBox(
-                                height: isMobile ? 80 : 40,
+                                height: isMobile ? 80 : 70,
                                 // یہاں ہم چوڑائی (Width) فکس کریں گے تاکہ 3 کالمز بنیں
                                 width: isMobile
                                     ? (MediaQuery.of(context).size.width / 1) -
