@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:muslim/Core/Const/app_audio.dart';
@@ -15,7 +16,7 @@ void main() async {
   if (!kIsWeb) {
     AdController().initialize();
   }
-  runApp(const MyApp());
+  runApp(DevicePreview(builder: (context) => MyApp(), enabled: true));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      useInheritedMediaQuery: true, // Ye zaroori hai
+      locale: DevicePreview.locale(context), // Ye bhi
+      builder: DevicePreview.appBuilder, // Aur ye bhi
       home: Bottomnav(),
     );
   }

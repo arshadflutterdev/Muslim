@@ -338,7 +338,6 @@ class _AhadeesState extends State<Ahadees> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 50,
-
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
