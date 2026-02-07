@@ -227,6 +227,7 @@ class _TasbeehState extends State<Tasbeeh> {
                   children: [
                     // Gap(height * 0.012),
                     // Top Container with refresh, sound, vibration, font
+                    Gap(isMobile ? 50 : 0),
                     Container(
                       // height: height * 0.12,
                       width: double.infinity,
@@ -419,7 +420,7 @@ class _TasbeehState extends State<Tasbeeh> {
                         ],
                       ),
                     ),
-                    Gap(height * 0.02),
+                    Gap(height * 0.01),
                     // Azkar display
                     Container(
                       width: double.infinity,
@@ -859,7 +860,7 @@ class _TasbeehState extends State<Tasbeeh> {
                               ),
                               child: CustomContainer0(
                                 height: isMobile
-                                    ? height * 0.15
+                                    ? height * 0.19
                                     : height * 0.29,
                                 widht: double.infinity,
                                 fillcolour: Color(0xff59AC77),
@@ -875,9 +876,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                           children: [
                                             Text(
                                               (currentIndex + 1).toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
-                                                fontSize: isMobile ? 12 : 18,
+                                                fontSize: 18,
                                               ),
                                             ),
                                             const Text(
@@ -889,9 +890,9 @@ class _TasbeehState extends State<Tasbeeh> {
                                             ),
                                             Text(
                                               azkaar.length.toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
-                                                fontSize: isMobile ? 12 : 18,
+                                                fontSize: 18,
                                               ),
                                             ),
                                           ],
@@ -901,9 +902,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                           child: Text(
                                             azkaar[currentIndex],
                                             style: TextStyle(
-                                              fontSize: isMobile
-                                                  ? 15
-                                                  : fontsize,
+                                              fontSize: fontsize,
                                               color: Colors.white,
                                             ),
                                             textAlign: TextAlign.center,
@@ -945,7 +944,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                         Text(
                                           azkarmean[currentIndex],
                                           style: TextStyle(
-                                            fontSize: isMobile ? 14 : fontsize,
+                                            fontSize: fontsize,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -959,9 +958,72 @@ class _TasbeehState extends State<Tasbeeh> {
                             ),
                           ),
                           Gap(6),
-                          Container(
+                          isMobile
+                              ? SizedBox.shrink()
+                              : Container(
+                                  // height: 100,
+                                  width: width * 0.25,
+                                  // color: Colors.blue,
+                                  color: Color(0xffFFFDF1),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            counters[currentIndex].toString(),
+                                            style: Apptextstyle.title.copyWith(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 58,
+                                            ),
+                                          ),
+                                          const Text(
+                                            "/",
+                                            style: TextStyle(
+                                              fontSize: 40,
+                                              color: Colors.black38,
+                                            ),
+                                          ),
+                                          Text(
+                                            selectedNumbers[currentIndex]
+                                                .toString(),
+                                            style: Apptextstyle.title.copyWith(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const Text("Round :"),
+                                          Text(" $round"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                    Gap(30),
+
+                    isMobile
+                        ? Container(
                             // height: 100,
-                            width: isMobile ? width * 0.18 : width * 0.25,
+                            // width: width * 0.25,
                             // color: Colors.blue,
                             color: Color(0xffFFFDF1),
                             child: Column(
@@ -977,13 +1039,13 @@ class _TasbeehState extends State<Tasbeeh> {
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w300,
-                                        fontSize: isMobile ? 20 : 58,
+                                        fontSize: 58,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       "/",
                                       style: TextStyle(
-                                        fontSize: isMobile ? 30 : 40,
+                                        fontSize: 40,
                                         color: Colors.black38,
                                       ),
                                     ),
@@ -992,7 +1054,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                       style: Apptextstyle.title.copyWith(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: isMobile ? 14 : 40,
+                                        fontSize: 40,
                                       ),
                                     ),
                                   ],
@@ -1007,10 +1069,8 @@ class _TasbeehState extends State<Tasbeeh> {
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          )
+                        : SizedBox.shrink(),
                     Gap(height * 0.044),
                     Expanded(
                       child: Container(

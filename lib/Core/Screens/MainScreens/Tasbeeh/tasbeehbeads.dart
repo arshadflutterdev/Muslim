@@ -44,8 +44,17 @@ class AnimatedBeadsCounterState extends State<AnimatedBeadsCounter> {
 
   Path buildCurvePath(Size size) {
     final double topMargin = baseBeadRadius + 8;
+    final double width = MediaQuery.of(context).size.width;
+    bool isMobile = width < 600;
     return Path()
-      ..moveTo(0, kIsWeb ? size.height * 0.3 : size.height * 0.5)
+      ..moveTo(
+        0,
+        kIsWeb
+            ? isMobile
+                  ? size.height * 0.5
+                  : size.height * 0.3
+            : size.height * 0.5,
+      )
       ..quadraticBezierTo(
         size.width * 0.31,
         topMargin,
@@ -140,6 +149,7 @@ class AnimatedBeadsCounterState extends State<AnimatedBeadsCounter> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double beadRadius = (width / 30).clamp(baseBeadRadius, 70.0);
+    bool isMobile = width < 600;
 
     return LayoutBuilder(
       builder: (context, constraints) {
